@@ -42,6 +42,34 @@
         margin-top: 0;
     }
 
+    /* hide the prev/next buttons on desktop slider */
+    .proj-nav {
+        display: none;
+    }
+    /* Show mobile project nav arrows */
+    .mobile-proj-nav {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+    }
+    .mobile-proj-nav .proj-nav {
+        display: flex;
+        position: static;
+        width: 3rem;
+        height: 3rem;
+        font-size: 2rem;
+        background: #eee;
+        color: #222;
+        border: none;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+    .mobile-proj-nav .proj-nav:active {
+        background: #ccc;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -92,5 +120,12 @@
     }
     .text-container {
         text-align: justify;
+    }
+}
+
+/* On desktop, hide mobile nav arrows */
+@media screen and (min-width: 1201px) {
+    .mobile-proj-nav {
+        display: none;
     }
 }

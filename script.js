@@ -47,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
 // hide visibility of scroll-down-indicator arrow
 window.addEventListener('scroll', () => {
             const indicator = document.querySelector('.scroll-down-indicator');

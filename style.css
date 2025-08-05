@@ -475,29 +475,43 @@ article .icon {
   position: relative;
 }
 
-/* nav buttons */
-.proj-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3rem;               /* fixed square */
-  height: 3rem;
-  display: flex;             /* center icon */
-  align-items: center;
-  justify-content: center;
-  background: transparent;   /* hidden by default */
-  border: none;
-  border-radius: 50%;        /* circle shape */
-  font-size: 6rem;           /* adjust arrow size */
-  cursor: pointer;
-  transition: 0.3s ease;
+/* 1) Make the container the positioning context */
+.experience-details-container {
+  position: relative;
+  overflow: visible;
 }
 
-.proj-nav.prev { left: 1rem; }
-.proj-nav.next { right: 1rem; }
+/* 2) Absolutely position both arrows halfway down the container */
+.proj-nav {
+  position: absolute;
+  top: 50%;                  
+  transform: translateY(-50%);
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* 3) Flush them to the left/right edges */
+.proj-nav.prev {
+  left: -5rem;
+}
+
+.proj-nav.next {
+  right: -5rem;
+}
+
 
 .proj-nav:hover {
-  background: rgba(255, 255, 255, 0.8);
+    color: white;
+    background: rgba(0,0,0, 0.8);
 }
 
 
