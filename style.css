@@ -139,6 +139,33 @@ a:hover {
     opacity: 1;
 }
 
+/* ARROW FOR SCROLL HINT ON MOBILE */
+
+.scroll-down-indicator {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: #555;
+    animation: bounce 2s infinite;
+    opacity: 0.6;
+    cursor: pointer;
+    z-index: 10;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+
 
 /* SECTIONS */
 
