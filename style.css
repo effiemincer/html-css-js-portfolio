@@ -441,6 +441,67 @@ article .icon {
     border-radius: 1.5rem;
 }
 
+/* SCROLLING CAROUSEL */
+
+/* —— Projects Slider —— */
+.project-slider {
+  display: flex;
+  gap: 2rem;                  /* space between cards */
+  padding: 1rem 0;            /* vertical breathing room */
+  overflow-x: auto;           /* enable horizontal scroll */
+  scroll-behavior: smooth;    /* smooth scrolling when using JS or arrow links */
+  scroll-snap-type: x mandatory; /* optional: snap to each card */
+}
+
+/* force each card to be at least 300px wide and not shrink */
+.project-slider .details-container {
+  flex: 0 0 300px;
+  scroll-snap-align: start;    /* optional: start a snap at each card */
+}
+
+/* hide scrollbar in Firefox */
+.project-slider {
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE 10+ */
+}
+
+/* hide scrollbar in WebKit browsers */
+.project-slider::-webkit-scrollbar {
+  display: none;               /* Chrome, Safari, Opera */
+}
+
+/* on your slider wrapper (e.g. #projects or .experience-details-container) */
+#projects .experience-details-container {
+  position: relative;
+}
+
+/* nav buttons */
+.proj-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;               /* fixed square */
+  height: 3rem;
+  display: flex;             /* center icon */
+  align-items: center;
+  justify-content: center;
+  background: transparent;   /* hidden by default */
+  border: none;
+  border-radius: 50%;        /* circle shape */
+  font-size: 6rem;           /* adjust arrow size */
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.proj-nav.prev { left: 1rem; }
+.proj-nav.next { right: 1rem; }
+
+.proj-nav:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+
+
 /* CONTACT */
 
 #contact {
