@@ -372,7 +372,12 @@ article .icon {
 .project-img {
     border-radius: 2rem;
     width: 90%;
-    height: 90%
+    height: 90%;
+}
+
+.jack-to-hack-img {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .project-title {
@@ -385,6 +390,21 @@ article .icon {
 .project-btn {
     color: black;
     border-color: rgb(163,163,163);
+}
+
+#projects .btn-container {
+    display: inline-flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+#projects .project-btn {
+    padding: 0.5rem 1rem;
+    width: auto;
+    font-size: 0.9rem;
+    border-radius: 1.5rem;
 }
 
 /* CONTACT */
