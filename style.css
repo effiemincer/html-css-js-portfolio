@@ -441,6 +441,13 @@ article .icon {
     border-radius: 1.5rem;
 }
 
+.one-liner {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    color: rgb(53,53,53);
+    text-align: center;
+}
+
 /* SCROLLING CAROUSEL */
 
 /* —— Projects Slider —— */
@@ -556,6 +563,12 @@ article .icon {
 
 .email-icon .whatsapp-icon{
     height: 2.5rem;
+}
+
+#contact .section__text__p2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: -1rem;
 }
 
 /* FOOTER */
