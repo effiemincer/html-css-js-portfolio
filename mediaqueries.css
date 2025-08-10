@@ -12,6 +12,10 @@
 
 /* when the screen is smaller than 1200px, hide the desktop nav and show the mobile nav */
 @media screen and (max-width: 1200px) {
+    /* PATCH: mobile card width */
+    .project-slider .details-container {
+        flex: 0 0 85vw; /* make each card mostly full width on phones/tablets */
+    }
     #desktop-nav {
         display: none;
     }
@@ -69,6 +73,12 @@
     }
     .mobile-proj-nav .proj-nav:active {
         background: #ccc;
+    }
+
+    /* Make mobile project slides slightly smaller */
+    .project-slider .details-container {
+        flex: 0 0 80vw; /* 80% of viewport width */
+        max-width: 320px; /* optional cap */
     }
 }
 

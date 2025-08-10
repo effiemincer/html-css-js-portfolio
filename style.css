@@ -9,6 +9,9 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 html {
@@ -17,7 +20,29 @@ html {
 
 
 p {
-    color: rgb(85,85, 85);
+    color: rgb(85,85,85);
+}
+
+/* ACCESSIBILITY */
+a:focus-visible, .btn:focus-visible, .proj-nav:focus-visible, .hamburger-icon:focus-visible {
+    outline: 3px solid #222;
+    outline-offset: 3px;
+}
+
+/* Skip link */
+.skip-to-content {
+    position: absolute;
+    left: -999px;
+    top: -999px;
+    background: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    z-index: 1000;
+}
+.skip-to-content:focus {
+    left: 1rem;
+    top: 1rem;
 }
 
 /* TRANSITION */
@@ -82,6 +107,8 @@ a:hover {
     height: 24px;
     width: 30px;
     cursor: pointer;    
+    background: transparent;
+    border: none;
 }
 
 .hamburger-icon span {
@@ -100,15 +127,18 @@ a:hover {
     max-height: 0;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .menu-links a {
     display: block;
-    padding: 10px;
-    text-align: center;
+    padding: 10px 14px;
+    text-align: left;
     color: black;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
+    font-size: 1rem;
 }
 
 .menu-links li {
@@ -121,17 +151,14 @@ a:hover {
 
 .hamburger-icon.open span:first-child {
     transform: rotate(45deg) translate(10px, 5px );
-    /* rotate the first line to form an X */
 }
 
 .hamburger-icon.open span:nth-child(2) {
     opacity: 0;
-    /* hide the middle line */
 }
 
 .hamburger-icon.open span:last-child {
     transform: rotate(-45deg) translate(10px, -5px );
-    /* rotate the last line to form an X */
 }
 
 .hamburger-icon span:first-child {
@@ -204,8 +231,8 @@ section {
 }
 
 .profile-pic {
-    object-fit: cover; /* ensures the image fills the box */
-    border-radius: 50%; /* makes it circular */
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .section__text {
@@ -336,6 +363,7 @@ section {
     border: rgb(53,53,53) 0.1rem solid;
     border-color: rgb(163,163,163);
     text-align: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.04);
 }
 
 .section-container {
@@ -450,48 +478,41 @@ article .icon {
 
 /* SCROLLING CAROUSEL */
 
-/* —— Projects Slider —— */
 .project-slider {
   display: flex;
-  gap: 2rem;                  /* space between cards */
-  padding: 1rem 0;            /* vertical breathing room */
-  overflow-x: auto;           /* enable horizontal scroll */
-  scroll-behavior: smooth;    /* smooth scrolling when using JS or arrow links */
-  scroll-snap-type: x mandatory; /* optional: snap to each card */
+  gap: 2rem;
+  padding: 1rem 0;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
 }
 
-/* force each card to be at least 300px wide and not shrink */
 .project-slider .details-container {
   flex: 0 0 300px;
-  scroll-snap-align: start;    /* optional: start a snap at each card */
+  scroll-snap-align: start;
 }
 
-/* hide scrollbar in Firefox */
 .project-slider {
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* hide scrollbar in WebKit browsers */
 .project-slider::-webkit-scrollbar {
-  display: none;               /* Chrome, Safari, Opera */
+  display: none;
 }
 
-/* on your slider wrapper (e.g. #projects or .experience-details-container) */
 #projects .experience-details-container {
   position: relative;
 }
 
-/* 1) Make the container the positioning context */
 .experience-details-container {
   position: relative;
   overflow: visible;
 }
 
-/* 2) Absolutely position both arrows halfway down the container */
 .proj-nav {
   position: absolute;
-  top: 50%;                  
+  top: 50%;
   transform: translateY(-50%);
   width: 4rem;
   height: 4rem;
@@ -506,7 +527,6 @@ article .icon {
   z-index: 10;
 }
 
-/* 3) Flush them to the left/right edges */
 .proj-nav.prev {
   left: -5rem;
 }
@@ -515,13 +535,10 @@ article .icon {
   right: -5rem;
 }
 
-
 .proj-nav:hover {
     color: white;
     background: rgba(0,0,0, 0.8);
 }
-
-
 
 /* CONTACT */
 
@@ -561,7 +578,8 @@ article .icon {
     height: 2rem;
 }
 
-.email-icon .whatsapp-icon{
+/* FIXED: comma to select both icons */
+.email-icon, .whatsapp-icon{
     height: 2.5rem;
 }
 

@@ -4,13 +4,40 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Effie Mincer's Porfolio</title>
+    <title>Effie Mincer — Student Software Developer</title>
+    <meta name="description" content="Effie Mincer — Computer Science student and software developer. Projects in Zig, Java, .NET, and more. Based in Jerusalem, Israel.">
+    <link rel="canonical" href="https://www.effiemincer.dev/">
+    <meta property="og:title" content="Effie Mincer — Student Software Developer">
+    <meta property="og:description" content="Projects in Zig, Java, .NET, and more. Based in Jerusalem, Israel.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.effiemincer.dev/">
+    <meta property="og:image" content="./assets/github_prof_square.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="./assets/favicon7.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Effie Mincer",
+      "url": "https://www.effiemincer.dev/",
+      "image": "https://www.effiemincer.dev/assets/github_prof_square.png",
+      "sameAs": [
+        "https://github.com/effiemincer",
+        "https://www.linkedin.com/in/effie-mincer/"
+      ],
+      "jobTitle": "Student Software Developer",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Jerusalem College of Technology (Machon Lev)"
+      }
+    }
+    </script>
 </head>
 <body>
-    <nav id="desktop-nav">
+    <a class="skip-to-content" href="#about">Skip to content</a>
+    <nav id="desktop-nav" aria-label="Primary">
         <div class="logo">Effie Mincer</div>
         <div>
             <ul class="nav-links">
@@ -21,15 +48,15 @@
             </ul>
         </div>
     </nav>
-    <nav id="mobile-nav">
+    <nav id="mobile-nav" aria-label="Mobile Primary">
         <div class="logo">Effie Mincer</div>
         <div class="hamburger-menu">
-            <div class="hamburger-icon" onclick="toggleMenu()">
+            <button class="hamburger-icon" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
-            </div>
-            <div class="menu-links">
+            </button>
+            <div id="mobile-menu" class="menu-links">
                 <li><a href="#about" onclick="toggleMenu()">About</a></li>
                 <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
                 <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
@@ -37,25 +64,25 @@
             </div>
         </div>
     </nav>
+    <main>
     <section id="profile">
-        <div class="scroll-down-indicator">
-            <span>&#x25BC;</span> <!-- Unicode down arrow -->
+        <div class="scroll-down-indicator" aria-hidden="true">
+            <span>&#x25BC;</span>
         </div>
         <div class="section-pic-container">
-            <img src="./assets/github_prof_square.png" alt="Effie Mincer Profile Picture" class="profile-pic">
+            <img src="./assets/github_prof_square.png" alt="Portrait of Effie Mincer" class="profile-pic" loading="eager" decoding="async">
         </div>
         <div class="section__text">
             <p class="section__text__p1">Hi, I'm</p>
             <h1 class="title">Effie Mincer</h1>
             <p class="section__text__p2">Student Software Developer</p>
-            <!-- <p class="section__text__p2 one-liner">Code is my medium. <br />Clarity is my mission.</p>-->
             <div class="btn-container">
-                <button class="btn btn-color-2" onclick="window.open('./assets/Effie Mincer.pdf', '_blank')">Download CV</button>
-                <button class="btn btn-color-1" onclick="location.href='./#contact'">Contact Me</button>
+                <button class="btn btn-color-2" onclick="window.open('./assets/Effie Mincer.pdf', '_blank')" aria-label="Download CV">Download CV</button>
+                <button class="btn btn-color-1" onclick="location.href='./#contact'" aria-label="Jump to contact section">Contact Me</button>
             </div>
             <div id="socials-container">
-                <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" onclick="window.open('https://www.linkedin.com/in/effie-mincer/', '_blank')">
-                <img src="./assets/github.png" alt="GitHub" class="icon" onclick="window.open('https://github.com/effiemincer', '_blank')">
+                <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" onclick="window.open('https://www.linkedin.com/in/effie-mincer/', '_blank')" role="link" aria-label="Open LinkedIn profile">
+                <img src="./assets/github.png" alt="GitHub" class="icon" onclick="window.open('https://github.com/effiemincer', '_blank')" role="link" aria-label="Open GitHub profile">
             </div>
         </div>
     </section>
@@ -63,23 +90,20 @@
         <p class="section__text__p1">Get To Know More</p>
         <h1 class="title">About Me</h1>
         <div class="section-container">
-            <!--<div class="section-pic-container">
-                <img src="./assets/Linkedin_prof_square.png" alt="Profile Picture" class="about-pic">
-            </div>-->
             <div class="about-details-container">
                 <div class="about-containers">
                     <div class="details-container">
-                        <img src="./assets/experience.png" alt="Experience icon" class="icon">
+                        <img src="./assets/experience.png" alt="Career goals icon" class="icon" loading="lazy" decoding="async">
                         <h3>Career Goals</h3>
-                        <p>Build impactful software and<br /> contribute meaningfully to a team</p>
+                        <p>Build impactful software and<br>contribute meaningfully to a team</p>
                     </div>
                     <div class="details-container">
-                        <img src="./assets/education.png" alt="Education icon" class="icon">
+                        <img src="./assets/education.png" alt="Education icon" class="icon" loading="lazy" decoding="async">
                         <h3>Education</h3>
-                        <p>B.Sc Computer Science <br /> Jerusalem College of Technology (Machon Lev)</p>
+                        <p>B.Sc Computer Science <br> Jerusalem College of Technology (Machon Lev)</p>
                     </div>
                     <div class="details-container">
-                        <img src="./assets/muscle.png" alt="Experience icon" class="icon">
+                        <img src="./assets/muscle.png" alt="Strengths icon" class="icon" loading="lazy" decoding="async">
                         <h3>Strengths</h3>
                         <p>Problem solving, Communication, Adaptability, Leadership</p>
                     </div>  
@@ -95,7 +119,7 @@
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#experience'">
+        <img src="./assets/arrow.png" alt="" class="icon arrow" onclick="location.href='./#experience'" aria-hidden="true">
     </section>
     <section id="experience">
         <p class="section__text__p1">Explore My</p>
@@ -106,42 +130,42 @@
                     <h2 class="experience-sub-title">Programming Languages</h2>
                     <div class="article-container">
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Python</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>C++</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>C</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Java</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Zig</h3>
                                 <p>Intermediate</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Prolog</h3>
                                 <p>Intermediate</p>
@@ -153,28 +177,28 @@
                     <h2 class="experience-sub-title">Tools</h2>
                     <div class="article-container">
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Git</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>Visual Studio Code</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>JetBrains IDEs</h3>
                                 <p>Experienced</p>
                             </div>
                         </article>
                         <article>
-                            <img src="./assets/checkmark.png" alt="Experience icon" class="icon">
+                            <img src="./assets/checkmark.png" alt="" class="icon" loading="lazy" decoding="async">
                             <div>
                                 <h3>AI Agents</h3>
                                 <p>Experienced</p>
@@ -184,86 +208,63 @@
                 </div>
             </div>
         </div>
-    <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#projects'">
+    <img src="./assets/arrow.png" alt="" class="icon arrow" onclick="location.href='./#projects'" aria-hidden="true">
 
     </section>
     <section id="projects">
         <p class="section__text__p1">Browse My Recent</p>
         <h1 class="title">Projects</h1>
         <div class="experience-details-container">
-            <div class="project-slider">
+            <div class="project-slider" aria-label="Project carousel">
                 <div class="details-container color-container">
                     <div class="article-container">
-                        <img src="./assets/jacktohack.png" alt="Jack to Hack Compiler image" class="project-img jack-to-hack-img">
+                        <img src="./assets/jacktohack.png" alt="Jack → VM → Hack pipeline illustration" class="project-img jack-to-hack-img" loading="lazy" decoding="async">
                     </div>
                     <h2 class="experience-sub-title project-title">Jack to Hack - Zig Compiler</h2>
                     <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/zig-compiler-project'">
-                            Github
-                        </button>
-                    </div>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/zig-compiler-project/blob/main/README.md'">
-                            Read More
-                        </button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/zig-compiler-project'">GitHub</button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/zig-compiler-project/blob/main/README.md'">Read More</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
                     <div class="article-container">
-                        <img src="./assets/3d-rendering.jpg" alt="3D Scene Render" class="project-img">
+                        <img src="./assets/3d-rendering.jpg" alt="3D Scene rendering sample" class="project-img" loading="lazy" decoding="async">
                     </div>
                     <h2 class="experience-sub-title project-title">3D Scene Rendering Engine</h2>
                     <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/Java-3D-Scene-Rendering'">
-                            Github
-                        </button>
-                    </div>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/Java-3D-Scene-Rendering/blob/main/README.md'">
-                            Read More
-                        </button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/Java-3D-Scene-Rendering'">GitHub</button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/Java-3D-Scene-Rendering/blob/main/README.md'">Read More</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
                     <div class="article-container">
-                        <img src="./assets/task-manager.png" alt="Task Manager Home Screen" class="project-img">
+                        <img src="./assets/task-manager.png" alt="Task Manager app screenshot" class="project-img" loading="lazy" decoding="async">
                     </div>
                     <h2 class="experience-sub-title project-title">Task Management System</h2>
                     <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/.NET-Task-Management-System'">
-                            Github
-                    </div>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/.NET-Task-Management-System/blob/main/README.md'">
-                            Read More
-                        </button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/.NET-Task-Management-System'">GitHub</button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/.NET-Task-Management-System/blob/main/README.md'">Read More</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
                     <div class="article-container">
-                        <img src="./assets/Library-Database.png" alt="ERB diagram" class="project-img">
+                        <img src="./assets/Library-Database.png" alt="ERD diagram of a library database" class="project-img" loading="lazy" decoding="async">
                     </div>
                     <h2 class="experience-sub-title project-title">Library Relational Database</h2>
                     <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/database_mini_proj'">
-                            Github
-                    </div>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/database_mini_proj/blob/main/README.md'">
-                            Read More
-                        </button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/database_mini_proj'">GitHub</button>
+                        <button class="btn btn-color-2 project-btn" onclick="location.href='https://github.com/effiemincer/database_mini_proj/blob/main/README.md'">Read More</button>
                     </div>
                 </div>
             </div>
-            <button class="proj-nav prev" onclick="scrollProjects(-1)">‹</button>
-            <button class="proj-nav next" onclick="scrollProjects(1)">›</button>
-            <!-- Add mobile arrow controls below the slider -->
+            <button class="proj-nav prev" onclick="scrollProjects(-1)" aria-label="Previous project">‹</button>
+            <button class="proj-nav next" onclick="scrollProjects(1)" aria-label="Next project">›</button>
             <div class="mobile-proj-nav">
-                <button class="proj-nav prev" onclick="scrollProjects(-1)">‹</button>
-                <button class="proj-nav next" onclick="scrollProjects(1)">›</button>
+                <button class="proj-nav prev" onclick="scrollProjects(-1)" aria-label="Previous project">‹</button>
+                <button class="proj-nav next" onclick="scrollProjects(1)" aria-label="Next project">›</button>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow" onclick="location.href='./#contact'">
+        <img src="./assets/arrow.png" alt="" class="icon arrow" onclick="location.href='./#contact'" aria-hidden="true">
     </section>
     <section id="contact">
         <p class="section__text__p1">Get in touch</p>
@@ -271,28 +272,29 @@
         <p class="section__text__p2">I'd love to explore student dev opportunities!</p>
         <div class="contact-info-upper-container">
             <div class="contact-info-container">
-                <img src="./assets/email.png" alt="Email icon" class="icon contact-icon email-icon">
+                <img src="./assets/email.png" alt="" class="icon contact-icon email-icon" loading="lazy" decoding="async">
                 <p><a href="mailto:effie.mincer@gmail.com">Effie.mincer@gmail.com</a></p> 
             </div>
             <div class="contact-info-container">
-                <img src="./assets/linkedin.png" alt="Linkedin icon" class="icon contact-icon">
-                <p><a href="https://www.linkedin.com/in/effie-mincer/">LinkedIn</a></p> 
+                <img src="./assets/linkedin.png" alt="" class="icon contact-icon" loading="lazy" decoding="async">
+                <p><a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/effie-mincer/">LinkedIn</a></p> 
             </div>
             <div class="contact-info-container">
-                <img src="./assets/phone.png" alt="Whatsapp " class="icon contact-icon whatsapp-icon">
-                <p><a href="https://wa.me/972535698496">Whatsapp</a></p> 
+                <img src="./assets/phone.png" alt="" class="icon contact-icon whatsapp-icon" loading="lazy" decoding="async">
+                <p><a target="_blank" rel="noopener noreferrer" href="https://wa.me/972535698496">WhatsApp</a></p> 
             </div>
         </div>
     </section>
+    </main>
     <footer>
-        <nav>
+        <nav aria-label="Footer">
             <div class="nav-links-container">
                 <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#experience">Experience</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
         </nav>
         <p>Copyright &#169; 2025 Effie Mincer. All rights Reserved.</p>
