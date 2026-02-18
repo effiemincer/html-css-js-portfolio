@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,6 +14,9 @@
     <meta property="og:image" content="./assets/github_prof_square.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/png" href="./assets/favicon7.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
     <script type="application/ld+json">
@@ -40,35 +43,44 @@
     <header>
         <nav id="desktop-nav" aria-label="Primary">
             <a class="logo" href="#profile" aria-label="Go to top of page">Effie Mincer</a>
-            <div>
-                <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
+            <ul class="nav-links">
+                <li><a class="nav-link" href="#about">About</a></li>
+                <li><a class="nav-link" href="#experience">Experience</a></li>
+                <li><a class="nav-link" href="#projects">Projects</a></li>
+                <li><a class="nav-link" href="#contact">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false">
+                <span class="theme-toggle__icon" aria-hidden="true"></span>
+                <span class="theme-toggle__text">Theme</span>
+            </button>
         </nav>
+
         <nav id="mobile-nav" aria-label="Mobile Primary">
             <a class="logo" href="#profile" aria-label="Go to top of page">Effie Mincer</a>
-            <div class="hamburger-menu">
-                <button class="hamburger-icon" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+            <div class="mobile-actions">
+                <button class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false">
+                    <span class="theme-toggle__icon" aria-hidden="true"></span>
+                    <span class="theme-toggle__text">Theme</span>
                 </button>
-                <ul id="mobile-menu" class="menu-links" aria-hidden="true">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                <div class="hamburger-menu">
+                    <button class="hamburger-icon" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle menu" onclick="toggleMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <ul id="mobile-menu" class="menu-links" aria-hidden="true">
+                        <li><a class="nav-link" href="#about">About</a></li>
+                        <li><a class="nav-link" href="#experience">Experience</a></li>
+                        <li><a class="nav-link" href="#projects">Projects</a></li>
+                        <li><a class="nav-link" href="#contact">Contact</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
 
     <main id="main-content">
-        <section id="profile">
+        <section id="profile" class="reveal">
             <div class="scroll-down-indicator" aria-hidden="true">
                 <span>&#x25BC;</span>
             </div>
@@ -80,8 +92,9 @@
                 <h1 class="title">Effie Mincer</h1>
                 <p class="section__text__p2">Computer Science Student and Software Developer</p>
                 <div class="btn-container">
-                    <button class="btn btn-color-2" type="button" onclick="window.open('./assets/Effie Mincer.pdf', '_blank', 'noopener')">View Resume (PDF)</button>
-                    <button class="btn btn-color-1" type="button" onclick="location.href='#contact'">Get in Touch</button>
+                    <button class="btn btn--primary" type="button" onclick="location.href='#projects'">Projects</button>
+                    <button class="btn btn--secondary" type="button" onclick="location.href='#contact'">Get in Touch</button>
+                    <button class="btn btn--ghost" type="button" onclick="window.open('./assets/Effie Mincer.pdf', '_blank', 'noopener')">View Resume (PDF)</button>
                 </div>
                 <div id="socials-container" aria-label="Social profiles">
                     <a href="https://www.linkedin.com/in/effie-mincer/" target="_blank" rel="noopener noreferrer" aria-label="Open LinkedIn profile">
@@ -94,29 +107,29 @@
             </div>
         </section>
 
-        <section id="about">
+        <section id="about" class="reveal">
             <p class="section__text__p1">A Quick Introduction</p>
             <h2 class="title">About Me</h2>
             <div class="section-container">
                 <div class="about-details-container">
                     <div class="about-containers">
-                        <div class="details-container">
+                        <div class="details-container reveal">
                             <img src="./assets/experience.png" alt="Career goals icon" class="icon" loading="lazy" decoding="async">
                             <h3>Career Goals</h3>
                             <p>Build software that solves real problems and supports team success.</p>
                         </div>
-                        <div class="details-container">
+                        <div class="details-container reveal">
                             <img src="./assets/education.png" alt="Education icon" class="icon" loading="lazy" decoding="async">
                             <h3>Education</h3>
                             <p>B.Sc. in Computer Science<br>Jerusalem College of Technology (Machon Lev)</p>
                         </div>
-                        <div class="details-container">
+                        <div class="details-container reveal">
                             <img src="./assets/muscle.png" alt="Strengths icon" class="icon" loading="lazy" decoding="async">
                             <h3>Strengths</h3>
                             <p>Problem-solving, communication, adaptability, and leadership.</p>
                         </div>
                     </div>
-                    <div class="text-container">
+                    <div class="text-container reveal">
                         <p>
                             I'm a Computer Science student at Jerusalem College of Technology with a strong interest in building meaningful, reliable software. My projects span multiple domains, including a Zig compiler and a physics-based 3D rendering engine in Java. During my internship at Fullpath, I automated internal workflows and trained users, which strengthened both my technical execution and communication. I enjoy solving complex problems, mentoring others, and contributing to work that combines creativity with practical impact.
                         </p>
@@ -128,12 +141,12 @@
             </a>
         </section>
 
-        <section id="experience">
+        <section id="experience" class="reveal">
             <p class="section__text__p1">Core Skills</p>
             <h2 class="title">Experience</h2>
             <div class="experience-details-container">
                 <div class="about-containers">
-                    <div class="details-container">
+                    <div class="details-container reveal">
                         <h3 class="experience-sub-title">Programming Languages</h3>
                         <div class="article-container">
                             <article>
@@ -180,7 +193,7 @@
                             </article>
                         </div>
                     </div>
-                    <div class="details-container">
+                    <div class="details-container reveal">
                         <h3 class="experience-sub-title">Tools</h3>
                         <div class="article-container">
                             <article>
@@ -220,49 +233,73 @@
             </a>
         </section>
 
-        <section id="projects">
+        <section id="projects" class="reveal">
             <p class="section__text__p1">Selected Work</p>
             <h2 class="title">Projects</h2>
             <div class="experience-details-container">
                 <div class="project-slider" aria-label="Project carousel">
-                    <div class="details-container color-container">
+                    <div class="details-container color-container reveal">
                         <div class="article-container">
                             <img src="./assets/jacktohack.png" alt="Jack to VM to Hack pipeline illustration" class="project-img jack-to-hack-img" loading="lazy" decoding="async">
                         </div>
                         <h3 class="experience-sub-title project-title">Jack to Hack Zig Compiler</h3>
+                        <p class="project-description">Jack to VM to Hack pipeline illustration</p>
+                        <ul class="project-tags" aria-label="Technologies">
+                            <li>Zig</li>
+                            <li>Compiler</li>
+                            <li>Jack to Hack</li>
+                        </ul>
                         <div class="btn-container">
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/zig-compiler-project" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/zig-compiler-project/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/zig-compiler-project" target="_blank" rel="noopener noreferrer">View Code</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/zig-compiler-project/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
                         </div>
                     </div>
-                    <div class="details-container color-container">
+                    <div class="details-container color-container reveal">
                         <div class="article-container">
                             <img src="./assets/3d-rendering.jpg" alt="3D scene rendering sample" class="project-img" loading="lazy" decoding="async">
                         </div>
                         <h3 class="experience-sub-title project-title">3D Scene Rendering Engine</h3>
+                        <p class="project-description">3D scene rendering sample</p>
+                        <ul class="project-tags" aria-label="Technologies">
+                            <li>Java</li>
+                            <li>3D</li>
+                            <li>Rendering</li>
+                        </ul>
                         <div class="btn-container">
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/Java-3D-Scene-Rendering" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/Java-3D-Scene-Rendering/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/Java-3D-Scene-Rendering" target="_blank" rel="noopener noreferrer">View Code</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/Java-3D-Scene-Rendering/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
                         </div>
                     </div>
-                    <div class="details-container color-container">
+                    <div class="details-container color-container reveal">
                         <div class="article-container">
                             <img src="./assets/task-manager.png" alt="Task manager app screenshot" class="project-img" loading="lazy" decoding="async">
                         </div>
                         <h3 class="experience-sub-title project-title">Task Management System</h3>
+                        <p class="project-description">Task manager app screenshot</p>
+                        <ul class="project-tags" aria-label="Technologies">
+                            <li>.NET</li>
+                            <li>Task Management</li>
+                            <li>System</li>
+                        </ul>
                         <div class="btn-container">
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/.NET-Task-Management-System" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/.NET-Task-Management-System/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/.NET-Task-Management-System" target="_blank" rel="noopener noreferrer">View Code</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/.NET-Task-Management-System/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
                         </div>
                     </div>
-                    <div class="details-container color-container">
+                    <div class="details-container color-container reveal">
                         <div class="article-container">
                             <img src="./assets/Library-Database.png" alt="ERD diagram of a library database" class="project-img" loading="lazy" decoding="async">
                         </div>
                         <h3 class="experience-sub-title project-title">Library Relational Database</h3>
+                        <p class="project-description">ERD diagram of a library database</p>
+                        <ul class="project-tags" aria-label="Technologies">
+                            <li>Library</li>
+                            <li>Relational</li>
+                            <li>Database</li>
+                        </ul>
                         <div class="btn-container">
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/database_mini_proj" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a class="btn btn-color-2 project-btn" href="https://github.com/effiemincer/database_mini_proj/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/database_mini_proj" target="_blank" rel="noopener noreferrer">View Code</a>
+                            <a class="btn btn--ghost project-btn" href="https://github.com/effiemincer/database_mini_proj/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
                         </div>
                     </div>
                 </div>
@@ -278,7 +315,7 @@
             </a>
         </section>
 
-        <section id="contact">
+        <section id="contact" class="reveal">
             <p class="section__text__p1">Let's Connect</p>
             <h2 class="title">Contact Me</h2>
             <p class="section__text__p2">Open to student and early-career software opportunities.</p>
@@ -303,10 +340,10 @@
         <nav aria-label="Footer">
             <div class="nav-links-container">
                 <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a class="nav-link" href="#about">About</a></li>
+                    <li><a class="nav-link" href="#experience">Experience</a></li>
+                    <li><a class="nav-link" href="#projects">Projects</a></li>
+                    <li><a class="nav-link" href="#contact">Contact</a></li>
                 </ul>
             </div>
         </nav>
