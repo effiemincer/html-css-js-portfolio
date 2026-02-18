@@ -123,6 +123,13 @@ function setupProjectSlider() {
   };
 
   const scrollByCard = (direction) => {
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    if (direction > 0 && slider.scrollLeft >= maxScrollLeft - 1 && blockSize > 0) {
+      slider.scrollLeft -= blockSize;
+    } else if (direction < 0 && slider.scrollLeft <= 1 && blockSize > 0) {
+      slider.scrollLeft += blockSize;
+    }
+
     slider.scrollBy({ left: direction * stepSize, behavior: 'smooth' });
   };
 
