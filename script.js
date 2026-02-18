@@ -1,138 +1,112 @@
-function toggleMenu(){
-  const menu = document.querySelector(".menu-links");
-  const icon = document.querySelector(".hamburger-icon");
+function toggleMenu(forceOpen) {
+  const menu = document.querySelector('.menu-links');
+  const icon = document.querySelector('.hamburger-icon');
   if (!menu || !icon) return;
-  const isOpen = menu.classList.toggle("open");
-  icon.classList.toggle("open");
-  icon.setAttribute("aria-expanded", String(isOpen));
+
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !menu.classList.contains('open');
+  menu.classList.toggle('open', shouldOpen);
+  icon.classList.toggle('open', shouldOpen);
+  icon.setAttribute('aria-expanded', String(shouldOpen));
+  menu.setAttribute('aria-hidden', String(!shouldOpen));
 }
 
 function getNumericPx(value, fallback = 0) {
   if (!value) return fallback;
-  const n = parseFloat(String(value).replace("px",""));
-  return isNaN(n) ? fallback : n;
+  const parsed = parseFloat(String(value).replace('px', ''));
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function setupMobileMenu() {
+  const menu = document.querySelector('.menu-links');
+  const hamburger = document.querySelector('.hamburger-icon');
+  const menuLinks = document.querySelectorAll('.menu-links a');
+
+  if (!menu || !hamburger) return;
+
+  menuLinks.forEach((link) => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+
+  document.addEventListener('click', (event) => {
+    const clickedInsideMenu = menu.contains(event.target);
+    const clickedHamburger = hamburger.contains(event.target);
+    if (!clickedInsideMenu && !clickedHamburger) {
+      toggleMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      toggleMenu(false);
+      hamburger.focus();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1200) {
+      toggleMenu(false);
+    }
+  }, { passive: true });
+}
+
+function setupProjectSlider() {
   const slider = document.querySelector('.project-slider');
   if (!slider) return;
 
-  // cache references
   const prevButtons = document.querySelectorAll('.proj-nav.prev');
   const nextButtons = document.querySelectorAll('.proj-nav.next');
 
-  // compute card width + gap safely
-  const card = slider.querySelector('.details-container');
-  const style = getComputedStyle(slider);
-  const gap = getNumericPx(style.gap) || getNumericPx(style.columnGap) || 16;
-  const baseCardWidth = card ? card.getBoundingClientRect().width : 300;
-  let itemWidth = baseCardWidth + gap;
-
-  // media query to switch behaviors
-  const mqDesktop = window.matchMedia('(min-width: 1201px)');
-
-  // Avoid double init
-  let desktopInited = false;
-
-  const clearClones = () => {
-    if (!slider.dataset.infinite) return;
-    // Remove all nodes that were cloned (marked with data-clone="1")
-    slider.querySelectorAll('[data-clone="1"]').forEach(n => n.remove());
-    slider.dataset.infinite = "";
+  const getStepSize = () => {
+    const firstCard = slider.querySelector('.details-container');
+    const sliderStyles = window.getComputedStyle(slider);
+    const gap = getNumericPx(sliderStyles.gap) || getNumericPx(sliderStyles.columnGap) || 16;
+    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
+    return Math.round(cardWidth + gap);
   };
 
-  const setupDesktopInfinite = () => {
-    if (desktopInited) return;
-    clearClones();
+  const updateButtonState = () => {
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    const hasOverflow = maxScrollLeft > 1;
 
-    const originals = Array.from(slider.children).filter(el => el.classList.contains('details-container'));
-    if (!originals.length) return;
-
-    // Clone originals to the end (normal order)
-    originals.forEach(slide => {
-      const c = slide.cloneNode(true);
-      c.setAttribute('data-clone', '1');
-      slider.appendChild(c);
+    [...prevButtons, ...nextButtons].forEach((button) => {
+      button.disabled = !hasOverflow;
+      button.setAttribute('aria-disabled', String(!hasOverflow));
     });
-    // Clone originals to the start (reverse order)
-    originals.slice().reverse().forEach(slide => {
-      const c = slide.cloneNode(true);
-      c.setAttribute('data-clone', '1');
-      slider.insertBefore(c, slider.firstChild);
-    });
-
-    const count = originals.length;
-    const styleNow = getComputedStyle(slider);
-    const gapNow = getNumericPx(styleNow.gap) || getNumericPx(styleNow.columnGap) || gap;
-    const cardNow = slider.querySelector('.details-container');
-    const widthNow = cardNow ? cardNow.getBoundingClientRect().width : baseCardWidth;
-    itemWidth = widthNow + gapNow;
-
-    const blockW = itemWidth * count;
-    slider.scrollLeft = blockW;
-
-    const onScrollWrap = () => {
-      if (slider.scrollLeft < 1) slider.scrollLeft += blockW;
-      else if (slider.scrollLeft > slider.scrollWidth - slider.clientWidth - 1) slider.scrollLeft -= blockW;
-    };
-    // store handler so we don't add multiple times
-    slider._wrapHandler && slider.removeEventListener('scroll', slider._wrapHandler);
-    slider._wrapHandler = onScrollWrap;
-    slider.addEventListener('scroll', onScrollWrap, { passive: true });
-
-    slider.dataset.infinite = "1";
-    desktopInited = true;
   };
 
-  const setupMobileNative = () => {
-    // On mobile, just use native swipe/scroll — no cloning
-    slider._wrapHandler && slider.removeEventListener('scroll', slider._wrapHandler);
-    clearClones();
-    desktopInited = false;
+  const scrollByCard = (direction) => {
+    slider.scrollBy({ left: direction * getStepSize(), behavior: 'smooth' });
   };
 
-  const applyMode = (e) => {
-    if (mqDesktop.matches) setupDesktopInfinite();
-    else setupMobileNative();
-  };
-
-  // initial
-  applyMode();
-  // respond to resizes
-  mqDesktop.addEventListener('change', applyMode);
-
-  const scrollByCard = (dir) => {
-    slider.scrollBy({ left: dir * itemWidth, behavior: 'smooth' });
-  };
-
-  // Buttons: click + keyboard
-  prevButtons.forEach(btn => {
-    btn.addEventListener('click', () => scrollByCard(-1));
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollByCard(-1); }
-    });
-  });
-  nextButtons.forEach(btn => {
-    btn.addEventListener('click', () => scrollByCard(1));
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollByCard(1); }
-    });
+  prevButtons.forEach((button) => {
+    button.addEventListener('click', () => scrollByCard(-1));
   });
 
-  // Recompute size on window resize/orientation change
-  window.addEventListener('resize', () => {
-    const styleNow = getComputedStyle(slider);
-    const gapNow = getNumericPx(styleNow.gap) || getNumericPx(styleNow.columnGap) || gap;
-    const cardNow = slider.querySelector('.details-container');
-    const widthNow = cardNow ? cardNow.getBoundingClientRect().width : baseCardWidth;
-    itemWidth = widthNow + gapNow;
-  }, { passive: true });
-});
+  nextButtons.forEach((button) => {
+    button.addEventListener('click', () => scrollByCard(1));
+  });
 
-// hide visibility of scroll-down-indicator arrow when scrolling
-window.addEventListener('scroll', () => {
+  slider.addEventListener('scroll', updateButtonState, { passive: true });
+  window.addEventListener('resize', updateButtonState, { passive: true });
+
+  updateButtonState();
+}
+
+function setupScrollIndicator() {
   const indicator = document.querySelector('.scroll-down-indicator');
   if (!indicator) return;
-  if (window.scrollY > 10) indicator.classList.add('hidden');
-  else indicator.classList.remove('hidden');
+
+  const updateIndicator = () => {
+    if (window.scrollY > 10) indicator.classList.add('hidden');
+    else indicator.classList.remove('hidden');
+  };
+
+  updateIndicator();
+  window.addEventListener('scroll', updateIndicator, { passive: true });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupMobileMenu();
+  setupProjectSlider();
+  setupScrollIndicator();
 });

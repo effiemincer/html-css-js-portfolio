@@ -1,62 +1,80 @@
-/* When the screen is smaller than 1400px, adjust profile height and wrap about-containers */
 @media screen and (max-width: 1400px) {
     #profile {
-        height: 83vh;
-        margin-bottom: 6rem;
+        min-height: 83vh;
+        margin-bottom: 4rem;
     }
+
     .about-containers {
         flex-wrap: wrap;
     }
+
+    .proj-nav.prev {
+        left: -3.5rem;
+    }
+
+    .proj-nav.next {
+        right: -3.5rem;
+    }
 }
 
-
-/* when the screen is smaller than 1200px, hide the desktop nav and show the mobile nav */
 @media screen and (max-width: 1200px) {
-    /* PATCH: mobile card width */
-    .project-slider .details-container {
-        flex: 0 0 85vw; /* make each card mostly full width on phones/tablets */
-    }
     #desktop-nav {
         display: none;
     }
+
     #mobile-nav {
         display: flex;
     }
-    #experience, .experience-details-container {
+
+    #experience,
+    .experience-details-container {
         margin-top: 2rem;
     }
-    #profile, .section-container {
+
+    #profile,
+    .section-container {
         display: block;
     }
+
     .arrow {
         display: none;
     }
-    section, .section-container{
+
+    section,
+    .section-container {
         height: fit-content;
     }
+
     section {
         margin: 0 5%;
     }
+
     .section-pic-container {
         width: 275px;
         height: 275px;
         margin: 0 auto 2rem;
     }
-    .about-containers{
+
+    .about-containers {
         margin-top: 0;
     }
 
-    /* hide the prev/next buttons on desktop slider */
+    .project-slider .details-container {
+        flex: 0 0 82vw;
+        max-width: 360px;
+    }
+
     .proj-nav {
         display: none;
     }
-    /* Show mobile project nav arrows */
+
     .mobile-proj-nav {
         display: flex;
         justify-content: center;
         gap: 2rem;
         margin-top: 1rem;
     }
+
     .mobile-proj-nav .proj-nav {
         display: flex;
         position: static;
@@ -71,69 +89,80 @@
         justify-content: center;
         z-index: 1;
     }
+
     .mobile-proj-nav .proj-nav:active {
         background: #ccc;
-    }
-
-    /* Make mobile project slides slightly smaller */
-    .project-slider .details-container {
-        flex: 0 0 80vw; /* 80% of viewport width */
-        max-width: 320px; /* optional cap */
     }
 }
 
 @media screen and (max-width: 600px) {
-    #contact, footer {
-        height: 40vh;
+    #contact,
+    footer {
+        min-height: fit-content;
     }
-    #profile{
-        height: 83vh;
+
+    #profile {
+        min-height: 83vh;
         margin-bottom: 0;
     }
+
     article {
         font-size: 1rem;
     }
+
     footer nav {
         height: fit-content;
         margin-bottom: 2rem;
     }
-    .about-containers, .contact-info-upper-container, .btn-container {
+
+    .about-containers,
+    .contact-info-upper-container,
+    .btn-container {
         flex-wrap: wrap;
     }
+
     .contact-info-container {
-        margin: 1%;
+        margin: 0.75rem;
     }
-    .contact-info-container p, .nav-links li a {
+
+    .contact-info-container p,
+    .nav-links li a {
         font-size: 1rem;
     }
+
     .experience-sub-title {
         font-size: 1.25rem;
     }
+
     .logo {
         font-size: 1.5rem;
     }
+
     .nav-links {
         flex-direction: column;
         gap: 0.5rem;
         text-align: center;
     }
+
     .section-pic-container {
-        width: auto;
-        height: 46vw;
+        width: min(280px, 70vw);
+        height: min(280px, 70vw);
         justify-content: center;
     }
+
     .section__text__p2 {
         font-size: 1.25rem;
     }
+
     .title {
         font-size: 2rem;
     }
+
     .text-container {
         text-align: justify;
     }
 }
 
-/* On desktop, hide mobile nav arrows */
 @media screen and (min-width: 1201px) {
     .mobile-proj-nav {
         display: none;
