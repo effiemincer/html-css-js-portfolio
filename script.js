@@ -107,31 +107,43 @@ function setupProjectSlider() {
   const wrapIfNeeded = () => {
     if (isWrapping || blockSize <= 0) return;
 
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-    if (slider.scrollLeft <= 1) {
+    if (slider.scrollLeft < blockSize) {
       isWrapping = true;
       slider.scrollLeft += blockSize;
       isWrapping = false;
-      return;
-    }
-
-    if (slider.scrollLeft >= maxScrollLeft - 1) {
+    } else if (slider.scrollLeft >= 2 * blockSize) {
       isWrapping = true;
       slider.scrollLeft -= blockSize;
       isWrapping = false;
     }
   };
+
 
   const scrollByCard = (direction) => {
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-    if (direction > 0 && slider.scrollLeft >= maxScrollLeft - 1 && blockSize > 0) {
-      slider.scrollLeft -= blockSize;
-    } else if (direction < 0 && slider.scrollLeft <= 1 && blockSize > 0) {
+    if (blockSize <= 0) return;
+
+    // Keep us in the middle (original) block before computing the next move
+    // Middle block range is [blockSize, 2*blockSize)
+    if (slider.scrollLeft < blockSize) {
       slider.scrollLeft += blockSize;
+    } else if (slider.scrollLeft >= 2 * blockSize) {
+      slider.scrollLeft -= blockSize;
     }
 
-    slider.scrollBy({ left: direction * stepSize, behavior: 'smooth' });
+    // Predict next position
+    const next = slider.scrollLeft + direction * stepSize;
+
+    // If the next move would leave the middle block, jump by one block first
+    if (direction > 0 && next >= 2 * blockSize) {
+      slider.scrollLeft -= blockSize; // instant jump left one block
+    } else if (direction < 0 && next < blockSize) {
+      slider.scrollLeft += blockSize; // instant jump right one block
+    }
+
+    // Now do the animated move
+    slider.scrollBy({ left: direction * stepSize, behavior: "smooth" });
   };
+
 
   prevButtons.forEach((button) => {
     button.removeAttribute('disabled');
