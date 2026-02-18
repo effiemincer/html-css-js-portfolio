@@ -68,6 +68,10 @@
         justify-content: flex-start;
     }
 
+    .hero-highlights {
+        justify-content: flex-start;
+    }
+
     .project-slider .details-container {
         min-width: min(45vw, 350px);
     }
@@ -115,6 +119,10 @@
 
     .theme-toggle__text {
         display: none;
+    }
+
+    .hero-badge {
+        font-size: 0.74rem;
     }
 
     .project-slider .details-container {
