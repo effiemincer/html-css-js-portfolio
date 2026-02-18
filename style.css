@@ -229,7 +229,7 @@ nav {
     border-radius: var(--radius-pill);
     border: 1px solid color-mix(in srgb, var(--accent) 52%, var(--border));
     background: color-mix(in srgb, var(--accent) 22%, transparent);
-    color: #000000;
+    color: #ffffff;
     font-size: 0.92rem;
     font-weight: 600;
     white-space: nowrap;
