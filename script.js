@@ -55,41 +55,105 @@ function setupProjectSlider() {
 
   const prevButtons = document.querySelectorAll('.proj-nav.prev');
   const nextButtons = document.querySelectorAll('.proj-nav.next');
+  const getOriginalSlides = () =>
+    Array.from(slider.children).filter(
+      (element) => element.classList.contains('details-container') && element.dataset.clone !== '1'
+    );
 
-  const getStepSize = () => {
-    const firstCard = slider.querySelector('.details-container');
+  let stepSize = 0;
+  let blockSize = 0;
+  let isWrapping = false;
+  let resizeTimer = null;
+
+  const measureTrack = () => {
+    const firstOriginal = getOriginalSlides()[0];
     const sliderStyles = window.getComputedStyle(slider);
     const gap = getNumericPx(sliderStyles.gap) || getNumericPx(sliderStyles.columnGap) || 16;
-    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 300;
-    return Math.round(cardWidth + gap);
+    const cardWidth = firstOriginal ? firstOriginal.getBoundingClientRect().width : 300;
+    stepSize = Math.round(cardWidth + gap);
+    blockSize = stepSize * getOriginalSlides().length;
   };
 
-  const updateButtonState = () => {
-    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-    const hasOverflow = maxScrollLeft > 1;
+  const removeClones = () => {
+    slider.querySelectorAll('[data-clone="1"]').forEach((node) => node.remove());
+  };
 
-    [...prevButtons, ...nextButtons].forEach((button) => {
-      button.disabled = !hasOverflow;
-      button.setAttribute('aria-disabled', String(!hasOverflow));
+  const buildInfiniteTrack = () => {
+    const originals = getOriginalSlides();
+    if (!originals.length) return;
+
+    removeClones();
+
+    const prepend = document.createDocumentFragment();
+    const append = document.createDocumentFragment();
+
+    originals.forEach((slide) => {
+      const startClone = slide.cloneNode(true);
+      startClone.dataset.clone = '1';
+      prepend.appendChild(startClone);
+
+      const endClone = slide.cloneNode(true);
+      endClone.dataset.clone = '1';
+      append.appendChild(endClone);
     });
+
+    slider.insertBefore(prepend, slider.firstChild);
+    slider.appendChild(append);
+
+    measureTrack();
+    slider.scrollLeft = blockSize;
+  };
+
+  const wrapIfNeeded = () => {
+    if (isWrapping || blockSize <= 0) return;
+
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+    if (slider.scrollLeft <= 1) {
+      isWrapping = true;
+      slider.scrollLeft += blockSize;
+      isWrapping = false;
+      return;
+    }
+
+    if (slider.scrollLeft >= maxScrollLeft - 1) {
+      isWrapping = true;
+      slider.scrollLeft -= blockSize;
+      isWrapping = false;
+    }
   };
 
   const scrollByCard = (direction) => {
-    slider.scrollBy({ left: direction * getStepSize(), behavior: 'smooth' });
+    slider.scrollBy({ left: direction * stepSize, behavior: 'smooth' });
   };
 
   prevButtons.forEach((button) => {
+    button.removeAttribute('disabled');
+    button.setAttribute('aria-disabled', 'false');
     button.addEventListener('click', () => scrollByCard(-1));
   });
 
   nextButtons.forEach((button) => {
+    button.removeAttribute('disabled');
+    button.setAttribute('aria-disabled', 'false');
     button.addEventListener('click', () => scrollByCard(1));
   });
 
-  slider.addEventListener('scroll', updateButtonState, { passive: true });
-  window.addEventListener('resize', updateButtonState, { passive: true });
+  slider.addEventListener('scroll', wrapIfNeeded, { passive: true });
 
-  updateButtonState();
+  window.addEventListener(
+    'resize',
+    () => {
+      if (resizeTimer) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const currentOffset = blockSize > 0 ? slider.scrollLeft % blockSize : 0;
+        buildInfiniteTrack();
+        if (blockSize > 0) slider.scrollLeft = blockSize + currentOffset;
+      }, 120);
+    },
+    { passive: true }
+  );
+
+  buildInfiniteTrack();
 }
 
 function setupScrollIndicator() {
