@@ -1,140 +1,127 @@
-@media screen and (max-width: 1199px) {
-    #desktop-nav {
-        display: none;
-    }
-
-    #mobile-nav {
-        display: flex;
-    }
-
-    #profile {
-        min-height: auto;
-        padding-top: var(--space-6);
-    }
-
-    .arrow {
-        display: none;
-    }
-
-    .proj-nav {
-        display: none;
-    }
-
-    .mobile-proj-nav {
-        display: flex;
-    }
-}
-
+/* ============================================================
+   Tablet (768px+)
+   ============================================================ */
 @media screen and (min-width: 768px) {
-    main {
-        width: min(100% - 3rem, var(--max-width));
-    }
+  main {
+    width: min(100% - 3rem, var(--max-width));
+  }
 
-    .about-containers {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  nav {
+    width: min(100% - 3rem, var(--max-width));
+  }
 
-    .article-container {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  footer {
+    width: min(100% - 3rem, var(--max-width));
+  }
 
-    .project-slider .details-container {
-        min-width: min(72vw, 360px);
-    }
+  section {
+    padding: var(--space-8) 0;
+  }
+
+  .section-header {
+    margin-bottom: var(--space-7);
+  }
+
+  /* About: side-by-side — decisive split, bio dominates */
+  .about-layout {
+    grid-template-columns: 1fr 260px;
+    gap: var(--space-8);
+  }
+
+  .about__sidebar {
+    order: 0;
+  }
+
+  .about__photo {
+    max-width: 240px;
+    margin: 0;
+  }
+
+  /* Experience: meta | content */
+  .exp-entry {
+    grid-template-columns: 100px 1fr;
+    gap: var(--space-5);
+  }
+
+  /* Skills: two columns */
+  .skills-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+
+  /* Projects: image | content side-by-side */
+  .project {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  /* Feature first project with larger image */
+  .project:first-child {
+    grid-template-columns: 3fr 2fr;
+  }
+
+  /* Alternate even projects: content left, image right */
+  .project:nth-child(even) .project__image {
+    order: 2;
+  }
+
+  .project:nth-child(even) .project__content {
+    order: 1;
+  }
+
+  .project__content h3 {
+    font-size: var(--text-xl);
+  }
 }
 
+/* ============================================================
+   Desktop (1024px+)
+   ============================================================ */
 @media screen and (min-width: 1024px) {
-    .about-containers {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  :root {
+    --header-height: 72px;
+  }
 
-    #profile {
-        grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
-        gap: var(--space-8);
-    }
+  /* Swap nav visibility */
+  #desktop-nav {
+    display: flex;
+  }
 
-    .section__text {
-        text-align: left;
-    }
+  #mobile-nav {
+    display: none;
+  }
 
-    .section__text__p1,
-    .title,
-    #contact .section__text__p2 {
-        text-align: inherit;
-    }
+  section {
+    padding: var(--space-9) 0;
+  }
 
-    .btn-container,
-    #socials-container {
-        justify-content: flex-start;
-    }
+  .section-header h2 {
+    font-size: var(--text-2xl);
+  }
 
-    .hero-highlights {
-        justify-content: flex-start;
-    }
+  /* Hero: centered in viewport, no section padding */
+  #profile {
+    min-height: calc(100dvh - var(--header-height));
+    padding: 0;
+  }
 
-    .project-slider .details-container {
-        min-width: min(45vw, 350px);
-    }
+  .hero {
+    max-width: 800px;
+  }
 
-    .proj-nav.prev {
-        left: -3.5rem;
-    }
+  /* Tighter transition from hero to about */
+  #about {
+    padding-top: var(--space-8);
+  }
 
-    .proj-nav.next {
-        right: -3.5rem;
-    }
-}
+  /* About: wider sidebar on desktop */
+  .about-layout {
+    grid-template-columns: 1fr 280px;
+  }
 
-@media screen and (min-width: 1200px) {
-    #mobile-nav {
-        display: none;
-    }
-
-    #desktop-nav {
-        display: flex;
-    }
-
-    .mobile-proj-nav {
-        display: none;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    :root {
-        --header-height: 64px;
-    }
-
-    main {
-        width: min(100% - 1.5rem, var(--max-width));
-        padding-top: var(--space-4);
-    }
-
-    section {
-        padding: var(--space-7) 0;
-    }
-
-    .logo {
-        font-size: 1.05rem;
-    }
-
-    .theme-toggle__text {
-        display: none;
-    }
-
-    .hero-badge {
-        font-size: 0.74rem;
-    }
-
-    .project-slider .details-container {
-        min-width: min(92vw, 330px);
-    }
-
-    .contact-info-container {
-        width: 100%;
-        justify-content: center;
-    }
-
-    footer .nav-links {
-        gap: var(--space-1);
-    }
+  /* Contact: compact closing section */
+  #contact {
+    padding: var(--space-7) 0 var(--space-8);
+  }
 }
