@@ -287,7 +287,7 @@ function setupPesukim() {
   if (!input || !searchBtn || !statusEl || !resultsEl || !kbToggle || !kbContainer) return;
 
   // Current display language: 'he', 'en', or 'both'
-  var displayLang = 'he';
+  var displayLang = 'both';
   resultsEl.dataset.lang = displayLang;
 
   // Page state for Show More buttons: keyed by "nameIdx-criteriaType-sectionIdx"
