@@ -117,11 +117,10 @@ def fetch_json(url, retries=1):
                 raise
 
 
-def clean_hebrew(text):
-    """Strip HTML, nikud, entities, notes, section markers; replace Tetragrammaton."""
+def _clean_common(text):
+    """Shared cleanup: HTML, maqaf, ketiv/qere, entities, braces, names."""
     text = HTML_RE.sub("", text)
-    text = text.replace("\u05BE", " ")  # maqaf → space (before nikud strip)
-    text = NIKUD_RE.sub("", text)
+    text = text.replace("\u05BE", " ")  # maqaf → space
     text = KETIV_QERE_RE.sub(
         lambda m: (re.search(r"\[([^\]]*)\]", m.group()) or type("", (), {"group": lambda s, *a: ""})()).group(1),
         text,
@@ -131,9 +130,29 @@ def clean_hebrew(text):
     text = ENTITY_RE.sub(" ", text)
     text = BRACE_RE.sub(" ", text)
     text = CGJ_RE.sub("", text)
+    text = text.replace("\u05F4", "").replace("*", "")
+    return text
+
+
+def clean_hebrew_display(text):
+    """Clean for display: keeps nikud, replaces divine names."""
+    text = _clean_common(text)
+    # Replace divine names (on nikud-bearing text, match with optional nikud between letters)
+    # Tetragrammaton: יהוה with possible nikud
+    text = re.sub(r"\u05D9[\u0591-\u05C7]*\u05D4[\u0591-\u05C7]*\u05D5[\u0591-\u05C7]*\u05D4[\u0591-\u05C7]*", "\u05D4'", text)
+    # Elokim: אלהים with possible nikud
+    text = re.sub(r"\u05D0[\u0591-\u05C7]*\u05DC[\u0591-\u05C7]*\u05D4[\u0591-\u05C7]*\u05D9[\u0591-\u05C7]*\u05DD[\u0591-\u05C7]*",
+                  "\u05D0\u05DC\u05E7\u05D9\u05DD", text)
+    text = MULTI_SPACE_RE.sub(" ", text).strip()
+    return text
+
+
+def clean_hebrew_search(text):
+    """Clean for search: strips nikud, replaces divine names."""
+    text = _clean_common(text)
+    text = NIKUD_RE.sub("", text)
     text = TETRA_RE.sub("\u05D4'", text)
     text = ELOKIM_RE.sub("\u05D0\u05DC\u05E7\u05D9\u05DD", text)
-    text = text.replace("\u05F4", "").replace("*", "")
     text = MULTI_SPACE_RE.sub(" ", text).strip()
     return text
 
@@ -237,16 +256,18 @@ def build():
 
         verse_count = 0
         for c_num, v_num, he_raw in he_verses:
-            he_clean = clean_hebrew(he_raw)
+            he_display = clean_hebrew_display(he_raw)
+            he_search = clean_hebrew_search(he_raw)
             en_raw = en_lookup.get((c_num, v_num), "")
             en_clean = clean_english(en_raw) if en_raw else ""
 
-            fl, ll = get_first_last_hebrew(he_clean)
+            fl, ll = get_first_last_hebrew(he_search)
             if fl is None:
                 continue
 
             all_verses.append({
-                "h": he_clean,
+                "h": he_display,
+                "hs": he_search,
                 "e": en_clean,
                 "b": book_idx,
                 "c": c_num,

@@ -444,7 +444,7 @@ function setupPesukim() {
 
     for (var i = 0; i < verses.length; i++) {
       var v = verses[i];
-      var inContains = wordRe.test(v.h);
+      var inContains = wordRe.test(v.hs || v.h);
       var inLetters = nameFirst && nameLast && v.fl === nameFirst && v.ll === nameLast;
 
       if (inContains && inLetters) {
