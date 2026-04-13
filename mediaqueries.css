@@ -73,6 +73,15 @@
   .project__content h3 {
     font-size: var(--text-xl);
   }
+
+  /* Pesukim: constrain widths on tablet */
+  .pesukim-keyboard {
+    max-width: 600px;
+  }
+
+  .pesukim-input-row {
+    max-width: 480px;
+  }
 }
 
 /* ============================================================
@@ -123,5 +132,34 @@
   /* Contact: compact closing section */
   #contact {
     padding: var(--space-7) 0 var(--space-8);
+  }
+
+  /* Pesukim: master-detail layout on desktop */
+  .pesukim-app {
+    max-width: none;
+  }
+
+  .pesukim-browser {
+    flex-direction: row;
+    gap: var(--space-6);
+    align-items: flex-start;
+  }
+
+  .pesukim-nav {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    width: 240px;
+    flex-shrink: 0;
+    max-height: calc(100dvh - var(--header-height) - var(--space-8));
+    overflow-y: auto;
+  }
+
+  .pesukim-panels {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pesukim-verse-hebrew {
+    font-size: 1.15rem;
   }
 }
