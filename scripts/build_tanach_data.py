@@ -120,6 +120,7 @@ def fetch_json(url, retries=1):
 def clean_hebrew(text):
     """Strip HTML, nikud, entities, notes, section markers; replace Tetragrammaton."""
     text = HTML_RE.sub("", text)
+    text = text.replace("\u05BE", " ")  # maqaf → space (before nikud strip)
     text = NIKUD_RE.sub("", text)
     text = KETIV_QERE_RE.sub(
         lambda m: (re.search(r"\[([^\]]*)\]", m.group()) or type("", (), {"group": lambda s, *a: ""})()).group(1),
