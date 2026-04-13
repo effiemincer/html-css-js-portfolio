@@ -120,20 +120,40 @@ function setupScrollSpy() {
     });
   };
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) activate(visible.target.id);
-    },
-    {
-      rootMargin: '-35% 0px -45% 0px',
-      threshold: [0.2, 0.4, 0.6]
-    }
-  );
+  let ticking = false;
 
-  sections.forEach((section) => observer.observe(section));
+  function update() {
+    const offset = getHeaderOffset();
+    const scrollBottom = window.scrollY + window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
+
+    // At page bottom, activate the last section
+    if (docHeight - scrollBottom < 2) {
+      activate(sections[sections.length - 1].id);
+      ticking = false;
+      return;
+    }
+
+    // Current section = last one whose top has scrolled past the header offset
+    let current = null;
+    for (const section of sections) {
+      if (window.scrollY >= section.offsetTop - offset) {
+        current = section.id;
+      }
+    }
+
+    if (current) activate(current);
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  update();
 }
 
 function setupRevealAnimations() {
