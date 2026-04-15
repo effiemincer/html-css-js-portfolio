@@ -277,6 +277,11 @@ function setupPesukim() {
     ['\u05E7','\u05E8','\u05E9','\u05EA','\u05DA','\u05DD','\u05DF','\u05E3','\u05E5']
   ];
 
+  var SORT_KEY = 'pesukim-sort';
+  var SCORES_KEY = 'pesukim-show-scores';
+  var SCORE_TOOLTIP = 'Prominence score 0\u2013255: citations in siddur/liturgy, Talmud, Midrash, and commentaries. Higher means more widely referenced in Jewish tradition.';
+  var TAAMIM_RE = /[\u0591-\u05AF\u05BD]/g;
+
   var input = document.getElementById('pesukim-name');
   var searchBtn = document.querySelector('.pesukim-search');
   var statusEl = document.getElementById('pesukim-status');
@@ -284,14 +289,35 @@ function setupPesukim() {
   var kbToggle = document.querySelector('.pesukim-kb-toggle');
   var kbContainer = document.getElementById('pesukim-keyboard');
   var langToggle = document.querySelector('.pesukim-lang-toggle');
+  var sortToggle = document.querySelector('.pesukim-sort-toggle');
+  var scoreToggle = document.querySelector('.pesukim-score-toggle');
   if (!input || !searchBtn || !statusEl || !resultsEl || !kbToggle || !kbContainer) return;
 
   // Current display language: 'he', 'en', or 'both'
   var displayLang = 'both';
   resultsEl.dataset.lang = displayLang;
 
+  // Sort mode: 'quality' (default) or 'chronological'
+  var sortMode = localStorage.getItem(SORT_KEY) === 'chronological' ? 'chronological' : 'quality';
+  // Score visibility: defaults off
+  var showScores = localStorage.getItem(SCORES_KEY) === 'true';
+  resultsEl.classList.toggle('pesukim-results--show-scores', showScores);
+
   // Page state for Show More buttons: keyed by "nameIdx-criteriaType-sectionIdx"
   var pageState = {};
+
+  function sortIndicesByMode(indices) {
+    if (sortMode === 'quality') {
+      indices.sort(function (a, b) {
+        var qa = tanachData.verses[a].q || 0;
+        var qb = tanachData.verses[b].q || 0;
+        if (qb !== qa) return qb - qa;
+        return a - b; // stable tiebreak: chronological
+      });
+    } else {
+      indices.sort(function (a, b) { return a - b; });
+    }
+  }
 
   // --- Data loading ---
   function loadData() {
@@ -417,6 +443,68 @@ function setupPesukim() {
     });
   }
 
+  // Sort toggle: initialize from stored sortMode, then wire click handler
+  if (sortToggle) {
+    sortToggle.querySelectorAll('.pesukim-sort-toggle__btn').forEach(function (b) {
+      var active = b.dataset.sort === sortMode;
+      b.classList.toggle('pesukim-sort-toggle__btn--active', active);
+      b.setAttribute('aria-checked', String(active));
+    });
+    sortToggle.addEventListener('click', function (e) {
+      var btn = e.target.closest('.pesukim-sort-toggle__btn');
+      if (!btn) return;
+      var newMode = btn.dataset.sort;
+      if (newMode === sortMode) return;
+      sortMode = newMode;
+      localStorage.setItem(SORT_KEY, sortMode);
+      sortToggle.querySelectorAll('.pesukim-sort-toggle__btn').forEach(function (b) {
+        var active = b.dataset.sort === sortMode;
+        b.classList.toggle('pesukim-sort-toggle__btn--active', active);
+        b.setAttribute('aria-checked', String(active));
+      });
+      applySortAndRerender();
+    });
+  }
+
+  // Show-scores toggle: initialize state, then wire click handler
+  if (scoreToggle) {
+    scoreToggle.setAttribute('aria-pressed', String(showScores));
+    scoreToggle.classList.toggle('pesukim-score-toggle--active', showScores);
+    scoreToggle.addEventListener('click', function () {
+      showScores = !showScores;
+      localStorage.setItem(SCORES_KEY, String(showScores));
+      scoreToggle.setAttribute('aria-pressed', String(showScores));
+      scoreToggle.classList.toggle('pesukim-score-toggle--active', showScores);
+      resultsEl.classList.toggle('pesukim-results--show-scores', showScores);
+    });
+  }
+
+  function applySortAndRerender() {
+    Object.keys(pageState).forEach(function (panelKey) {
+      var data = pageState[panelKey];
+      sortIndicesByMode(data.indices);
+      data.shown = PAGE_SIZE;
+      var panel = resultsEl.querySelector('[data-panel-id="' + panelKey + '"]');
+      if (!panel) return;
+      var listEl = panel.querySelector('.pesukim-verse-list');
+      if (listEl) listEl.innerHTML = renderVerseItems(data.indices.slice(0, PAGE_SIZE));
+      var remaining = data.indices.length - PAGE_SIZE;
+      var btn = panel.querySelector('.pesukim-show-more');
+      if (remaining > 0) {
+        if (!btn) {
+          btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'pesukim-show-more btn btn--ghost';
+          btn.dataset.pageKey = panelKey;
+          panel.appendChild(btn);
+        }
+        btn.textContent = 'Show More (' + remaining + ' remaining)';
+      } else if (btn) {
+        btn.remove();
+      }
+    });
+  }
+
   // --- Search logic ---
   function sofitNorm(ch) {
     return SOFIT_MAP[ch] || ch;
@@ -512,7 +600,8 @@ function setupPesukim() {
             if (!secIndices.length) return;
             var panelKey = nameIdx + '-' + crit.key + '-' + secIdx;
             if (!firstPanelKey) firstPanelKey = panelKey;
-            pageState[panelKey] = { indices: secIndices, shown: PAGE_SIZE };
+            sortIndicesByMode(secIndices);
+          pageState[panelKey] = { indices: secIndices, shown: PAGE_SIZE };
             sections.push({ secIdx: secIdx, panelKey: panelKey, count: secIndices.length });
           });
           groups.push({ key: crit.key, label: crit.label, total: crit.indices.length, sections: sections });
@@ -568,8 +657,6 @@ function setupPesukim() {
       statusEl.className = 'pesukim-status';
 
       wireUpNav();
-      wireUpVerseToggles();
-      wireUpShowMore();
 
       // Activate first panel
       if (firstPanelKey) activatePanel(firstPanelKey);
@@ -596,34 +683,32 @@ function setupPesukim() {
     });
   }
 
-  function wireUpVerseToggles() {
+  // Single delegated click handler for verse expand + show-more. Wired once in init.
+  function wireUpResultsDelegation() {
     resultsEl.addEventListener('click', function (e) {
+      var showMoreBtn = e.target.closest('.pesukim-show-more');
+      if (showMoreBtn) {
+        e.stopPropagation();
+        var key = showMoreBtn.dataset.pageKey;
+        if (!pageState[key]) return;
+        pageState[key].shown += PAGE_SIZE;
+        var data = pageState[key];
+        var panel = showMoreBtn.closest('.pesukim-panel');
+        var listEl = panel && panel.querySelector('.pesukim-verse-list');
+        if (listEl) listEl.innerHTML = renderVerseItems(data.indices.slice(0, data.shown));
+        if (data.shown >= data.indices.length) {
+          showMoreBtn.remove();
+        } else {
+          showMoreBtn.textContent = 'Show More (' + (data.indices.length - data.shown) + ' remaining)';
+        }
+        return;
+      }
       var item = e.target.closest('.pesukim-verse-item');
       if (!item) return;
-      if (e.target.closest('.pesukim-show-more')) return;
       var eng = item.querySelector('.pesukim-verse-english');
       if (!eng) return;
       var isOpen = eng.dataset.open === 'true';
       eng.dataset.open = String(!isOpen);
-    });
-  }
-
-  function wireUpShowMore() {
-    resultsEl.querySelectorAll('.pesukim-show-more').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var key = btn.dataset.pageKey;
-        if (!pageState[key]) return;
-        pageState[key].shown += PAGE_SIZE;
-        var listEl = btn.previousElementSibling;
-        var data = pageState[key];
-        listEl.innerHTML = renderVerseItems(data.indices.slice(0, data.shown));
-        if (data.shown >= data.indices.length) {
-          btn.remove();
-        } else {
-          btn.textContent = 'Show More (' + (data.indices.length - data.shown) + ' remaining)';
-        }
-      });
     });
   }
 
@@ -634,8 +719,12 @@ function setupPesukim() {
       var book = tanachData.books[v.b];
       html += '<li class="pesukim-verse-item">';
       html += '<div class="pesukim-verse-row">';
-      html += '<span class="pesukim-verse-ref">' + escapeHtml(book.e) + ' ' + v.c + ':' + v.v + '</span>';
-      html += '<span class="pesukim-verse-hebrew" dir="rtl" lang="he">' + escapeHtml(v.h) + '</span>';
+      html += '<span class="pesukim-verse-ref">' + escapeHtml(book.e) + ' ' + v.c + ':' + v.v;
+      if (typeof v.q === 'number') {
+        html += ' <span class="pesukim-verse-q" title="' + SCORE_TOOLTIP + '" aria-label="Prominence score ' + v.q + ' out of 255">' + v.q + '</span>';
+      }
+      html += '</span>';
+      html += '<span class="pesukim-verse-hebrew" dir="rtl" lang="he">' + escapeHtml(v.h.replace(TAAMIM_RE, '')) + '</span>';
       html += '</div>';
       if (v.e) {
         html += '<div class="pesukim-verse-english" data-open="false"><span class="pesukim-verse-english__inner">' + escapeHtml(v.e) + '</span></div>';
@@ -652,6 +741,7 @@ function setupPesukim() {
   }
 
   // --- Event bindings ---
+  wireUpResultsDelegation();
   searchBtn.addEventListener('click', doSearch);
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
