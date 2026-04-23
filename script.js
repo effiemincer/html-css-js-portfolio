@@ -721,7 +721,7 @@ function setupPesukim() {
     var verb = useNative ? 'Share' : 'Copy a shareable link to';
     return '<div class="pesukim-name-group__header">'
       + '<h3>' + escapeHtml(name) + '</h3>'
-      + '<button type="button" class="pesukim-share" data-name="' + escapeHtml(name) + '" data-total="' + total + '" aria-label="' + verb + ' pesukim for ' + escapeHtml(name) + '">'
+      + '<button type="button" class="pesukim-share" aria-label="' + verb + ' pesukim search">'
       + '<svg class="pesukim-share__icon pesukim-share__icon--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
       + (useNative
           ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
@@ -741,14 +741,13 @@ function setupPesukim() {
   }
 
   function handleShare(btn) {
-    var name = btn.dataset.name || input.value.trim();
-    if (!name) return;
-    var total = parseInt(btn.dataset.total || '0', 10);
-    var url = buildShareUrl(name);
-    var title = 'Pesukim for ' + name;
-    var text = total > 0
-      ? 'Pesukim for ' + name + ' — ' + total + ' verse' + (total !== 1 ? 's' : '')
-      : 'Pesukim for ' + name;
+    // Always share the full search query so multi-name searches
+    // (e.g. "גבריאל ישראל") share both names in one link.
+    var query = input.value.trim();
+    if (!query) return;
+    var url = buildShareUrl(query);
+    var title = 'Pesukim for ' + query;
+    var text = title;
 
     if (shouldUseNativeShare()) {
       try {
