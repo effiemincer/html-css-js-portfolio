@@ -1280,6 +1280,8 @@ nav {
 
 /* --- Status --- */
 .pesukim-status {
+  display: flex;
+  align-items: center;
   color: var(--text-2);
   font-size: var(--text-sm);
   min-height: 1.5em;
@@ -1318,6 +1320,9 @@ nav {
   justify-content: space-between;
   gap: var(--space-3);
   flex-wrap: wrap;
+  margin-top: 0;
+  margin-bottom: calc(-1 * var(--space-5));
+  padding-bottom: var(--space-1);
 }
 
 .pesukim-share-all-slot:empty {
