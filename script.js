@@ -737,7 +737,7 @@ function setupPesukim() {
 
   function buildNameHeader(name, total) {
     var useNative = shouldUseNativeShare();
-    var label = useNative ? 'Share' : 'Copy link';
+    var label = (useNative ? 'Share ' : 'Copy link for ') + escapeHtml(name);
     var verb = useNative ? 'Share' : 'Copy a shareable link to';
     return '<div class="pesukim-name-group__header">'
       + '<h3>' + escapeHtml(name) + '</h3>'
