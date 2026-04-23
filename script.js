@@ -670,7 +670,8 @@ function setupPesukim() {
         html += '</div>'; // .pesukim-name-group
       });
 
-      resultsEl.innerHTML = html;
+      var shareAllHtml = tokens.length >= 2 ? buildShareAllBar(rawValue, tokens.length) : '';
+      resultsEl.innerHTML = shareAllHtml + html;
       statusEl.textContent = totalFound + ' verse' + (totalFound !== 1 ? 's' : '') + ' found';
       statusEl.className = 'pesukim-status';
 
@@ -715,13 +716,31 @@ function setupPesukim() {
     return ok;
   }
 
+  function buildShareAllBar(rawValue, nameCount) {
+    var useNative = shouldUseNativeShare();
+    var label = useNative ? 'Share all ' + nameCount + ' names' : 'Copy link to all ' + nameCount + ' names';
+    var verb = useNative ? 'Share pesukim for all ' + nameCount + ' names' : 'Copy a shareable link for all ' + nameCount + ' names';
+    return '<div class="pesukim-share-all-bar">'
+      + '<button type="button" class="pesukim-share pesukim-share--all" aria-label="' + verb + '">'
+      + '<svg class="pesukim-share__icon pesukim-share__icon--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+      + (useNative
+          ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
+          : '<path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/>')
+      + '</svg>'
+      + '<svg class="pesukim-share__icon pesukim-share__icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+      + '<span class="pesukim-share__label">' + label + '</span>'
+      + '<span class="pesukim-share__label pesukim-share__label--success">Link copied!</span>'
+      + '</button>'
+      + '</div>';
+  }
+
   function buildNameHeader(name, total) {
     var useNative = shouldUseNativeShare();
     var label = useNative ? 'Share' : 'Copy link';
     var verb = useNative ? 'Share' : 'Copy a shareable link to';
     return '<div class="pesukim-name-group__header">'
       + '<h3>' + escapeHtml(name) + '</h3>'
-      + '<button type="button" class="pesukim-share" aria-label="' + verb + ' pesukim search">'
+      + '<button type="button" class="pesukim-share" data-name="' + escapeHtml(name) + '" aria-label="' + verb + ' pesukim for ' + escapeHtml(name) + '">'
       + '<svg class="pesukim-share__icon pesukim-share__icon--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
       + (useNative
           ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
@@ -741,9 +760,10 @@ function setupPesukim() {
   }
 
   function handleShare(btn) {
-    // Always share the full search query so multi-name searches
-    // (e.g. "גבריאל ישראל") share both names in one link.
-    var query = input.value.trim();
+    // Per-name share buttons carry data-name (just that name).
+    // The top-level "Share all" button has no data-name and falls back to
+    // the full live input so multi-name searches share every name together.
+    var query = (btn && btn.dataset.name) ? btn.dataset.name : input.value.trim();
     if (!query) return;
     var url = buildShareUrl(query);
     var title = 'Pesukim for ' + query;

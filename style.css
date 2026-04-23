@@ -1312,6 +1312,19 @@ nav {
   flex-wrap: wrap;
 }
 
+.pesukim-share-all-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--accent-soft);
+}
+
+.pesukim-share--all {
+  font-size: var(--text-base);
+}
+
 .pesukim-name-group__header h3 {
   font-family: var(--font-body);
   font-size: var(--text-lg);
