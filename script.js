@@ -515,24 +515,21 @@ function setupPesukim() {
     Object.keys(pageState).forEach(function (panelKey) {
       var data = pageState[panelKey];
       sortIndicesByMode(data.indices);
-      data.shown = PAGE_SIZE;
+      data.currentPage = 1;
       var panel = resultsEl.querySelector('[data-panel-id="' + panelKey + '"]');
       if (!panel) return;
       var listEl = panel.querySelector('.pesukim-verse-list');
       if (listEl) listEl.innerHTML = renderVerseItems(data.indices.slice(0, PAGE_SIZE));
-      var remaining = data.indices.length - PAGE_SIZE;
-      var btn = panel.querySelector('.pesukim-show-more');
-      if (remaining > 0) {
-        if (!btn) {
-          btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'pesukim-show-more btn btn--ghost';
-          btn.dataset.pageKey = panelKey;
-          panel.appendChild(btn);
-        }
-        btn.textContent = 'Show More (' + remaining + ' remaining)';
-      } else if (btn) {
-        btn.remove();
+      var oldBar = panel.querySelector('.pesukim-pagination');
+      var tmp = document.createElement('div');
+      tmp.innerHTML = renderPagination(panelKey, 1, data.indices.length);
+      var newBar = tmp.firstChild;
+      if (oldBar && newBar) {
+        oldBar.replaceWith(newBar);
+      } else if (newBar) {
+        panel.appendChild(newBar);
+      } else if (oldBar) {
+        oldBar.remove();
       }
     });
   }
@@ -579,9 +576,6 @@ function setupPesukim() {
     return { super: superSet, contains: containsSet, letters: letterSet };
   }
 
-  // Active panel key for master-detail view
-  var activePanel = null;
-
   function doSearch() {
     if (!tanachData) return;
     var rawValue = input.value.trim();
@@ -591,13 +585,11 @@ function setupPesukim() {
     statusEl.className = 'pesukim-status pesukim-status--loading';
     resultsEl.innerHTML = '';
     pageState = {};
-    activePanel = null;
 
     setTimeout(function () {
       var tokens = rawValue.split(/\s+/).filter(function (t) { return t.length > 0; });
       var totalFound = 0;
       var html = '';
-      var firstPanelKey = null;
 
       tokens.forEach(function (token, nameIdx) {
         var result = searchName(token);
@@ -630,7 +622,6 @@ function setupPesukim() {
           bySec.forEach(function (secIndices, secIdx) {
             if (!secIndices.length) return;
             var panelKey = nameIdx + '-' + crit.key + '-' + secIdx;
-            if (!firstPanelKey) firstPanelKey = panelKey;
             sortIndicesByMode(secIndices);
           pageState[panelKey] = { indices: secIndices, currentPage: 1 };
             sections.push({ secIdx: secIdx, panelKey: panelKey, count: secIndices.length });
@@ -687,8 +678,12 @@ function setupPesukim() {
 
       wireUpNav();
 
-      // Activate first panel
-      if (firstPanelKey) activatePanel(firstPanelKey);
+      // Activate the first panel of each name-group independently so multi-name
+      // searches show results for every name simultaneously.
+      resultsEl.querySelectorAll('.pesukim-name-group').forEach(function (group) {
+        var firstBtn = group.querySelector('.pesukim-nav__item');
+        if (firstBtn) activatePanel(firstBtn.dataset.panel);
+      });
 
       // Mirror current search into URL so the browser's own share/copy flow works
       syncUrlToSearch(rawValue);
@@ -786,13 +781,15 @@ function setupPesukim() {
   }
 
   function activatePanel(panelKey) {
-    activePanel = panelKey;
-    // Update nav active state
-    resultsEl.querySelectorAll('.pesukim-nav__item').forEach(function (btn) {
+    // Scope toggling to the name-group that owns this panel so each searched
+    // name keeps its own active panel independently.
+    var target = resultsEl.querySelector('.pesukim-panel[data-panel-id="' + panelKey + '"]');
+    var group = target && target.closest('.pesukim-name-group');
+    if (!group) return;
+    group.querySelectorAll('.pesukim-nav__item').forEach(function (btn) {
       btn.classList.toggle('pesukim-nav__item--active', btn.dataset.panel === panelKey);
     });
-    // Show active panel, hide others
-    resultsEl.querySelectorAll('.pesukim-panel').forEach(function (panel) {
+    group.querySelectorAll('.pesukim-panel').forEach(function (panel) {
       panel.classList.toggle('pesukim-panel--active', panel.dataset.panelId === panelKey);
     });
   }
