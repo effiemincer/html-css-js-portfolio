@@ -203,21 +203,22 @@
                 <h2>Pesukim for Your Name</h2>
             </div>
 
-            <div class="pesukim-app reveal">
-                <p class="pesukim-intro">There is a custom to recite a verse from Tanach before the final "Yihyu L'ratzon" at the end of Shemoneh Esrei — a pasuk whose first and last letters match your name, or one that contains your name entirely. When a verse matches both criteria, I call it a Super Match!</p>
+            <p class="pesukim-intro reveal">There is a custom to recite a verse from Tanach before the final <em>Yihyu L'ratzon</em> at the end of Shemoneh Esrei. You can recite a verse whose first and last letters match the first and last letters of your name, or one that contains your name entirely &mdash; both are perfectly fine options <span class="pesukim-intro__attrib">(heard from HaRav Yitzchak Berkowitz <span lang="he">שליט״א</span>)</span>. When a verse matches both criteria, I call it a <strong>Super Match!</strong></p>
 
+            <div class="pesukim-app reveal">
                 <div class="pesukim-input-group">
                     <label for="pesukim-name" class="pesukim-label">Enter a Hebrew name</label>
                     <div class="pesukim-input-row">
                         <input id="pesukim-name" class="pesukim-input" type="text"
                             dir="rtl" lang="he" autocomplete="off" spellcheck="false"
-                            placeholder="e.g. אברהם" aria-describedby="pesukim-status">
+                            placeholder="e.g. אברהם" aria-describedby="pesukim-name-hint pesukim-status">
                         <button type="button" class="pesukim-kb-toggle btn btn--ghost"
                             aria-expanded="false" aria-controls="pesukim-keyboard"
                             aria-label="Toggle Hebrew keyboard">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="8" x2="6" y2="8"/><line x1="10" y1="8" x2="10" y2="8"/><line x1="14" y1="8" x2="14" y2="8"/><line x1="18" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="10" y2="12"/><line x1="14" y1="12" x2="14" y2="12"/><line x1="18" y1="12" x2="18" y2="12"/><line x1="8" y1="16" x2="16" y2="16"/></svg>
                         </button>
                     </div>
+                    <p id="pesukim-name-hint" class="pesukim-input-hint">Two-part name? Join with a dash (like <span lang="he">בן-ציון</span>). Have more than one name? Separate them with a space.</p>
                     <div id="pesukim-keyboard" class="pesukim-keyboard pesukim-keyboard--closed"
                         role="group" aria-label="Hebrew keyboard" aria-hidden="true">
                         <!-- Keys rendered by JS -->
@@ -228,6 +229,11 @@
                     <button type="button" class="pesukim-search btn btn--primary" disabled>
                         Find Pesukim
                     </button>
+                </div>
+
+                <div id="pesukim-status" class="pesukim-status" aria-live="polite" aria-atomic="true"></div>
+
+                <div class="pesukim-toolbar" data-visible="false" aria-label="Display options">
                     <div class="pesukim-lang-toggle" role="radiogroup" aria-label="Display language">
                         <button type="button" class="pesukim-lang-toggle__btn" data-lang="he" aria-checked="false" role="radio">Hebrew</button>
                         <button type="button" class="pesukim-lang-toggle__btn" data-lang="en" aria-checked="false" role="radio">English</button>
@@ -237,11 +243,13 @@
                         <button type="button" class="pesukim-sort-toggle__btn" data-sort="quality" aria-checked="true" role="radio">Most famous first</button>
                         <button type="button" class="pesukim-sort-toggle__btn" data-sort="chronological" aria-checked="false" role="radio">Chronological</button>
                     </div>
-                    <button type="button" class="pesukim-score-toggle" aria-pressed="false" aria-label="Show prominence scores" title="Prominence score 0–255: citations in siddur/liturgy, Talmud, Midrash, and commentaries. Higher means more widely referenced in Jewish tradition.">Show scores</button>
-                    <button type="button" class="pesukim-copy-link" aria-label="Copy shareable link to these results" title="Copy a link you can share" disabled>Copy link</button>
+                    <div class="pesukim-toolbar__icons">
+                        <button type="button" class="pesukim-icon-btn pesukim-score-toggle" aria-pressed="false" aria-label="Show prominence scores" title="Show prominence scores — how widely each verse is cited in siddur, Talmud, Midrash, and commentaries.">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg>
+                        </button>
+                    </div>
                 </div>
 
-                <div id="pesukim-status" class="pesukim-status" aria-live="polite" aria-atomic="true"></div>
                 <div class="pesukim-results" aria-label="Search results"></div>
             </div>
         </section>
