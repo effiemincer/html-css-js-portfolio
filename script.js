@@ -291,6 +291,7 @@ function setupPesukim() {
   var langToggle = document.querySelector('.pesukim-lang-toggle');
   var sortToggle = document.querySelector('.pesukim-sort-toggle');
   var scoreToggle = document.querySelector('.pesukim-score-toggle');
+  var copyLinkBtn = document.querySelector('.pesukim-copy-link');
   if (!input || !searchBtn || !statusEl || !resultsEl || !kbToggle || !kbContainer) return;
 
   // Current display language: 'he', 'en', or 'both'
@@ -346,7 +347,9 @@ function setupPesukim() {
 
   // --- Button state ---
   function updateButtonState() {
-    searchBtn.disabled = !(input.value.trim() && tanachData);
+    var hasInput = !!input.value.trim();
+    searchBtn.disabled = !(hasInput && tanachData);
+    if (copyLinkBtn) copyLinkBtn.disabled = !hasInput;
   }
 
   input.addEventListener('input', updateButtonState);
@@ -660,7 +663,61 @@ function setupPesukim() {
 
       // Activate first panel
       if (firstPanelKey) activatePanel(firstPanelKey);
+
+      // Mirror current search into URL so the browser's own share/copy flow works
+      syncUrlToSearch(rawValue);
     }, 10);
+  }
+
+  function buildShareUrl(name) {
+    return location.origin + location.pathname + '?name=' + encodeURIComponent(name) + '#pesukim';
+  }
+
+  function syncUrlToSearch(name) {
+    if (!history.replaceState) return;
+    var url = '?name=' + encodeURIComponent(name) + '#pesukim';
+    try { history.replaceState(null, '', url); } catch (e) { /* ignore */ }
+  }
+
+  function copyTextFallback(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function flashCopied() {
+    if (!copyLinkBtn) return;
+    var original = copyLinkBtn.textContent;
+    copyLinkBtn.textContent = 'Copied!';
+    copyLinkBtn.dataset.copied = 'true';
+    setTimeout(function () {
+      copyLinkBtn.textContent = original;
+      delete copyLinkBtn.dataset.copied;
+    }, 1500);
+  }
+
+  function handleCopyLink() {
+    var name = input.value.trim();
+    if (!name) return;
+    var url = buildShareUrl(name);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(flashCopied, function () {
+        if (copyTextFallback(url)) flashCopied();
+        else window.prompt('Copy this link:', url);
+      });
+    } else {
+      if (copyTextFallback(url)) flashCopied();
+      else window.prompt('Copy this link:', url);
+    }
   }
 
   function activatePanel(panelKey) {
@@ -749,6 +806,29 @@ function setupPesukim() {
       if (!searchBtn.disabled) doSearch();
     }
   });
+  if (copyLinkBtn) copyLinkBtn.addEventListener('click', handleCopyLink);
+
+  // --- Shareable link: read ?name= and auto-run a search ---
+  function runSearchFromUrl() {
+    var params;
+    try { params = new URLSearchParams(location.search); } catch (e) { return; }
+    var name = (params.get('name') || '').trim();
+    if (!name) return;
+    input.value = name;
+    updateButtonState();
+    loadData().then(function () {
+      if (!tanachData) return;
+      doSearch();
+      var section = document.getElementById('pesukim');
+      if (!section) return;
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var offset = getHeaderOffset();
+      var top = section.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(top, 0), behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+  }
+
+  runSearchFromUrl();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
