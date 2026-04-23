@@ -1,8 +1,25 @@
 const THEME_KEY = 'theme-preference';
 const SECTION_IDS = ['profile', 'about', 'experience', 'pesukim', 'projects', 'contact'];
+const PESUKIM_SCROLL_KEY = 'pesukim-reload-scroll-y';
 let heroAnimTimeout = null;
 let tanachData = null;
 let tanachLoadPromise = null;
+
+// On pages with a pesukim shareable link (?name=), manage scroll restoration ourselves.
+// doSearch() renders hundreds of verses into the pesukim section after the browser has
+// already restored scroll, which triggers scroll anchoring and shifts scrollY down.
+// Manual restoration pins scrollY to its pre-refresh value.
+if (history.scrollRestoration) {
+  try {
+    if (new URLSearchParams(location.search).get('name')) {
+      history.scrollRestoration = 'manual';
+    }
+  } catch (e) { /* ignore */ }
+}
+
+window.addEventListener('pagehide', function () {
+  try { sessionStorage.setItem(PESUKIM_SCROLL_KEY, String(window.scrollY)); } catch (e) {}
+});
 
 function toggleMenu(forceOpen) {
   const menu = document.querySelector('.menu-links');
@@ -604,7 +621,7 @@ function setupPesukim() {
             var panelKey = nameIdx + '-' + crit.key + '-' + secIdx;
             if (!firstPanelKey) firstPanelKey = panelKey;
             sortIndicesByMode(secIndices);
-          pageState[panelKey] = { indices: secIndices, shown: PAGE_SIZE };
+          pageState[panelKey] = { indices: secIndices, currentPage: 1 };
             sections.push({ secIdx: secIdx, panelKey: panelKey, count: secIndices.length });
           });
           groups.push({ key: crit.key, label: crit.label, total: crit.indices.length, sections: sections });
@@ -641,11 +658,7 @@ function setupPesukim() {
             html += '<ol class="pesukim-verse-list">';
             html += renderVerseItems(data.indices.slice(0, PAGE_SIZE));
             html += '</ol>';
-            if (sec.count > PAGE_SIZE) {
-              html += '<button type="button" class="pesukim-show-more btn btn--ghost" data-page-key="' + sec.panelKey + '">';
-              html += 'Show More (' + (sec.count - PAGE_SIZE) + ' remaining)';
-              html += '</button>';
-            }
+            html += renderPagination(sec.panelKey, 1, sec.count);
             html += '</div>';
           });
         });
@@ -740,23 +753,97 @@ function setupPesukim() {
     });
   }
 
-  // Single delegated click handler for verse expand + show-more. Wired once in init.
+  // Build numbered page-pill list. For >7 pages, show 1, current-1, current, current+1, N with ellipses between gaps.
+  function buildPageList(current, total) {
+    if (total <= 7) {
+      var pages = [];
+      for (var i = 1; i <= total; i++) pages.push(i);
+      return pages;
+    }
+    var set = {};
+    [1, total, current, current - 1, current + 1].forEach(function (p) {
+      if (p >= 1 && p <= total) set[p] = true;
+    });
+    var keys = Object.keys(set).map(Number).sort(function (a, b) { return a - b; });
+    var out = [];
+    keys.forEach(function (p, idx) {
+      if (idx > 0 && p - keys[idx - 1] > 1) out.push('ellipsis');
+      out.push(p);
+    });
+    return out;
+  }
+
+  function renderPagination(panelKey, currentPage, totalCount) {
+    var totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+    if (totalPages <= 1) return '';
+    var html = '<div class="pesukim-pagination" role="navigation" aria-label="Verse pagination">';
+    var prevDisabled = currentPage <= 1 ? ' disabled' : '';
+    html += '<button type="button" class="pesukim-pagination__arrow" data-page-key="' + panelKey + '" data-page="' + (currentPage - 1) + '" aria-label="Previous page"' + prevDisabled + '>← Prev</button>';
+    buildPageList(currentPage, totalPages).forEach(function (entry) {
+      if (entry === 'ellipsis') {
+        html += '<span class="pesukim-pagination__ellipsis" aria-hidden="true">…</span>';
+        return;
+      }
+      var active = entry === currentPage;
+      html += '<button type="button" class="pesukim-pagination__page' + (active ? ' pesukim-pagination__page--active' : '') + '" data-page-key="' + panelKey + '" data-page="' + entry + '"';
+      if (active) html += ' aria-current="page"';
+      html += '>' + entry + '</button>';
+    });
+    var nextDisabled = currentPage >= totalPages ? ' disabled' : '';
+    html += '<button type="button" class="pesukim-pagination__arrow" data-page-key="' + panelKey + '" data-page="' + (currentPage + 1) + '" aria-label="Next page"' + nextDisabled + '>Next →</button>';
+    html += '</div>';
+    return html;
+  }
+
+  function goToPage(panelKey, page) {
+    var data = pageState[panelKey];
+    if (!data) return;
+    var totalPages = Math.max(1, Math.ceil(data.indices.length / PAGE_SIZE));
+    if (page < 1 || page > totalPages || page === data.currentPage) return;
+    data.currentPage = page;
+    var panel = resultsEl.querySelector('.pesukim-panel[data-panel-id="' + panelKey + '"]');
+    if (!panel) return;
+    var listEl = panel.querySelector('.pesukim-verse-list');
+    var start = (page - 1) * PAGE_SIZE;
+    if (listEl) listEl.innerHTML = renderVerseItems(data.indices.slice(start, start + PAGE_SIZE));
+    var oldBar = panel.querySelector('.pesukim-pagination');
+    if (oldBar) {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = renderPagination(panelKey, page, data.indices.length);
+      if (tmp.firstChild) oldBar.replaceWith(tmp.firstChild);
+    }
+  }
+
+  // Single delegated click handler for verse expand + pagination. Wired once in init.
   function wireUpResultsDelegation() {
     resultsEl.addEventListener('click', function (e) {
-      var showMoreBtn = e.target.closest('.pesukim-show-more');
-      if (showMoreBtn) {
+      var pageBtn = e.target.closest('.pesukim-pagination__page, .pesukim-pagination__arrow');
+      if (pageBtn) {
         e.stopPropagation();
-        var key = showMoreBtn.dataset.pageKey;
-        if (!pageState[key]) return;
-        pageState[key].shown += PAGE_SIZE;
-        var data = pageState[key];
-        var panel = showMoreBtn.closest('.pesukim-panel');
-        var listEl = panel && panel.querySelector('.pesukim-verse-list');
-        if (listEl) listEl.innerHTML = renderVerseItems(data.indices.slice(0, data.shown));
-        if (data.shown >= data.indices.length) {
-          showMoreBtn.remove();
+        if (pageBtn.disabled) return;
+        var key = pageBtn.dataset.pageKey;
+        var page = parseInt(pageBtn.dataset.page, 10);
+        if (!key || isNaN(page)) return;
+
+        // Keep the clicked control pinned to its viewport position so rapid clicks
+        // don't require chasing the button as content height changes.
+        var anchorSelector;
+        if (pageBtn.classList.contains('pesukim-pagination__arrow')) {
+          anchorSelector = pageBtn.getAttribute('aria-label') === 'Next page'
+            ? '.pesukim-pagination__arrow[aria-label="Next page"]'
+            : '.pesukim-pagination__arrow[aria-label="Previous page"]';
         } else {
-          showMoreBtn.textContent = 'Show More (' + (data.indices.length - data.shown) + ' remaining)';
+          anchorSelector = '.pesukim-pagination__page--active';
+        }
+        var preTop = pageBtn.getBoundingClientRect().top;
+
+        goToPage(key, page);
+
+        var panel = resultsEl.querySelector('.pesukim-panel[data-panel-id="' + key + '"]');
+        var newBtn = panel && panel.querySelector(anchorSelector);
+        if (newBtn) {
+          var delta = newBtn.getBoundingClientRect().top - preTop;
+          if (delta !== 0) window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
         }
         return;
       }
@@ -814,11 +901,32 @@ function setupPesukim() {
     try { params = new URLSearchParams(location.search); } catch (e) { return; }
     var name = (params.get('name') || '').trim();
     if (!name) return;
+    // On reload, the browser already restored scroll position — don't fight it.
+    var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+    var isReload = navEntries && navEntries[0] && navEntries[0].type === 'reload';
     input.value = name;
     updateButtonState();
     loadData().then(function () {
       if (!tanachData) return;
       doSearch();
+      if (isReload) {
+        // Restore scroll to its pre-refresh Y, overriding any shift from scroll anchoring.
+        // doSearch() uses an internal setTimeout(10) before touching innerHTML, so we
+        // wait past that, then defer again via rAF so scroll anchoring has already fired.
+        try {
+          var saved = sessionStorage.getItem(PESUKIM_SCROLL_KEY);
+          sessionStorage.removeItem(PESUKIM_SCROLL_KEY);
+          if (saved != null) {
+            var targetY = parseInt(saved, 10);
+            setTimeout(function () {
+              requestAnimationFrame(function () {
+                window.scrollTo(0, targetY);
+              });
+            }, 100);
+          }
+        } catch (e) {}
+        return;
+      }
       var section = document.getElementById('pesukim');
       if (!section) return;
       var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
