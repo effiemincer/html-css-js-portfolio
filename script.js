@@ -308,7 +308,20 @@ function setupPesukim() {
   var langToggle = document.querySelector('.pesukim-lang-toggle');
   var sortToggle = document.querySelector('.pesukim-sort-toggle');
   var scoreToggle = document.querySelector('.pesukim-score-toggle');
-  var copyLinkBtn = document.querySelector('.pesukim-copy-link');
+  var toolbar = document.querySelector('.pesukim-toolbar');
+  var canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+  // Only use native share sheet on touch-primary devices (phones/tablets).
+  // Evaluated at click time so matchMedia reflects current device state.
+  function shouldUseNativeShare() {
+    if (!canNativeShare) return false;
+    if (typeof window.matchMedia !== 'function') return false;
+    // Require all three: touch-primary + no hover + narrow viewport.
+    // Desktop touch laptops (which have hover) and large tablets get copy instead.
+    var coarse = window.matchMedia('(pointer: coarse)').matches;
+    var noHover = window.matchMedia('(hover: none)').matches;
+    var narrow = window.matchMedia('(max-width: 900px)').matches;
+    return coarse && noHover && narrow;
+  }
   if (!input || !searchBtn || !statusEl || !resultsEl || !kbToggle || !kbContainer) return;
 
   // Current display language: 'he', 'en', or 'both'
@@ -366,7 +379,6 @@ function setupPesukim() {
   function updateButtonState() {
     var hasInput = !!input.value.trim();
     searchBtn.disabled = !(hasInput && tanachData);
-    if (copyLinkBtn) copyLinkBtn.disabled = !hasInput;
   }
 
   input.addEventListener('input', updateButtonState);
@@ -593,12 +605,11 @@ function setupPesukim() {
         totalFound += nameTotal;
 
         if (nameTotal === 0) {
-          html += '<div class="pesukim-name-group"><h3>' + escapeHtml(token) + '</h3>';
-          html += '<p class="pesukim-empty">No matching verses found for this name.</p></div>';
+          html += '<div class="pesukim-name-group">' + buildNameHeader(token, 0) + '<p class="pesukim-empty">No matching verses found for this name.</p></div>';
           return;
         }
 
-        html += '<div class="pesukim-name-group"><h3>' + escapeHtml(token) + '</h3>';
+        html += '<div class="pesukim-name-group">' + buildNameHeader(token, nameTotal);
 
         // Build section data for nav and panels
         var groups = [];
@@ -672,6 +683,8 @@ function setupPesukim() {
       statusEl.textContent = totalFound + ' verse' + (totalFound !== 1 ? 's' : '') + ' found';
       statusEl.className = 'pesukim-status';
 
+      if (toolbar) toolbar.dataset.visible = 'true';
+
       wireUpNav();
 
       // Activate first panel
@@ -707,28 +720,67 @@ function setupPesukim() {
     return ok;
   }
 
-  function flashCopied() {
-    if (!copyLinkBtn) return;
-    var original = copyLinkBtn.textContent;
-    copyLinkBtn.textContent = 'Copied!';
-    copyLinkBtn.dataset.copied = 'true';
-    setTimeout(function () {
-      copyLinkBtn.textContent = original;
-      delete copyLinkBtn.dataset.copied;
-    }, 1500);
+  function buildNameHeader(name, total) {
+    var useNative = shouldUseNativeShare();
+    var label = useNative ? 'Share' : 'Copy link';
+    var verb = useNative ? 'Share' : 'Copy a shareable link to';
+    return '<div class="pesukim-name-group__header">'
+      + '<h3>' + escapeHtml(name) + '</h3>'
+      + '<button type="button" class="pesukim-share" data-name="' + escapeHtml(name) + '" data-total="' + total + '" aria-label="' + verb + ' pesukim for ' + escapeHtml(name) + '">'
+      + '<svg class="pesukim-share__icon pesukim-share__icon--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+      + (useNative
+          ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
+          : '<path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/>')
+      + '</svg>'
+      + '<svg class="pesukim-share__icon pesukim-share__icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+      + '<span class="pesukim-share__label">' + label + '</span>'
+      + '<span class="pesukim-share__label pesukim-share__label--success">Link copied!</span>'
+      + '</button>'
+      + '</div>';
   }
 
-  function handleCopyLink() {
-    var name = input.value.trim();
+  function flashShared(btn, label) {
+    if (!btn) return;
+    btn.dataset.copied = 'true';
+    setTimeout(function () { delete btn.dataset.copied; }, 1500);
+  }
+
+  function handleShare(btn) {
+    var name = btn.dataset.name || input.value.trim();
     if (!name) return;
+    var total = parseInt(btn.dataset.total || '0', 10);
     var url = buildShareUrl(name);
+    var title = 'Pesukim for ' + name;
+    var text = total > 0
+      ? 'Pesukim for ' + name + ' — ' + total + ' verse' + (total !== 1 ? 's' : '')
+      : 'Pesukim for ' + name;
+
+    if (shouldUseNativeShare()) {
+      try {
+        navigator.share({ title: title, text: text, url: url }).then(function () {
+          // Native share sheet provides its own confirmation; no flash needed.
+        }).catch(function (err) {
+          if (err && err.name === 'AbortError') return; // user dismissed
+          console.warn('[pesukim] navigator.share failed, falling back to copy:', err);
+          copyUrl(url, btn);
+        });
+      } catch (err) {
+        console.warn('[pesukim] navigator.share threw, falling back to copy:', err);
+        copyUrl(url, btn);
+      }
+      return;
+    }
+    copyUrl(url, btn);
+  }
+
+  function copyUrl(url, btn) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(flashCopied, function () {
-        if (copyTextFallback(url)) flashCopied();
+      navigator.clipboard.writeText(url).then(function () { flashShared(btn); }, function () {
+        if (copyTextFallback(url)) flashShared(btn);
         else window.prompt('Copy this link:', url);
       });
     } else {
-      if (copyTextFallback(url)) flashCopied();
+      if (copyTextFallback(url)) flashShared(btn);
       else window.prompt('Copy this link:', url);
     }
   }
@@ -817,6 +869,12 @@ function setupPesukim() {
   // Single delegated click handler for verse expand + pagination. Wired once in init.
   function wireUpResultsDelegation() {
     resultsEl.addEventListener('click', function (e) {
+      var shareBtn = e.target.closest('.pesukim-share');
+      if (shareBtn) {
+        e.stopPropagation();
+        handleShare(shareBtn);
+        return;
+      }
       var pageBtn = e.target.closest('.pesukim-pagination__page, .pesukim-pagination__arrow');
       if (pageBtn) {
         e.stopPropagation();
@@ -893,8 +951,6 @@ function setupPesukim() {
       if (!searchBtn.disabled) doSearch();
     }
   });
-  if (copyLinkBtn) copyLinkBtn.addEventListener('click', handleCopyLink);
-
   // --- Shareable link: read ?name= and auto-run a search ---
   function runSearchFromUrl() {
     var params;
