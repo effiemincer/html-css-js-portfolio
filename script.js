@@ -309,6 +309,7 @@ function setupPesukim() {
   var sortToggle = document.querySelector('.pesukim-sort-toggle');
   var scoreToggle = document.querySelector('.pesukim-score-toggle');
   var toolbar = document.querySelector('.pesukim-toolbar');
+  var shareAllSlot = document.querySelector('.pesukim-share-all-slot');
   var canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
   // Only use native share sheet on touch-primary devices (phones/tablets).
   // Evaluated at click time so matchMedia reflects current device state.
@@ -670,10 +671,12 @@ function setupPesukim() {
         html += '</div>'; // .pesukim-name-group
       });
 
-      var shareAllHtml = tokens.length >= 2 ? buildShareAllBar(rawValue, tokens.length) : '';
-      resultsEl.innerHTML = shareAllHtml + html;
+      resultsEl.innerHTML = html;
       statusEl.textContent = totalFound + ' verse' + (totalFound !== 1 ? 's' : '') + ' found';
       statusEl.className = 'pesukim-status';
+      if (shareAllSlot) {
+        shareAllSlot.innerHTML = tokens.length >= 2 ? buildShareAllButton(tokens.length) : '';
+      }
 
       if (toolbar) toolbar.dataset.visible = 'true';
 
@@ -716,12 +719,11 @@ function setupPesukim() {
     return ok;
   }
 
-  function buildShareAllBar(rawValue, nameCount) {
+  function buildShareAllButton(nameCount) {
     var useNative = shouldUseNativeShare();
-    var label = useNative ? 'Share all ' + nameCount + ' names' : 'Copy link to all ' + nameCount + ' names';
+    var label = useNative ? 'Share all ' + nameCount : 'Copy link to all ' + nameCount;
     var verb = useNative ? 'Share pesukim for all ' + nameCount + ' names' : 'Copy a shareable link for all ' + nameCount + ' names';
-    return '<div class="pesukim-share-all-bar">'
-      + '<button type="button" class="pesukim-share pesukim-share--all" aria-label="' + verb + '">'
+    return '<button type="button" class="pesukim-share pesukim-share--all" aria-label="' + verb + '">'
       + '<svg class="pesukim-share__icon pesukim-share__icon--default" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
       + (useNative
           ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>'
@@ -730,13 +732,12 @@ function setupPesukim() {
       + '<svg class="pesukim-share__icon pesukim-share__icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
       + '<span class="pesukim-share__label">' + label + '</span>'
       + '<span class="pesukim-share__label pesukim-share__label--success">Link copied!</span>'
-      + '</button>'
-      + '</div>';
+      + '</button>';
   }
 
   function buildNameHeader(name, total) {
     var useNative = shouldUseNativeShare();
-    var label = useNative ? 'Share' : 'Copy link';
+    var label = (useNative ? 'Share ' : 'Copy link for ') + escapeHtml(name);
     var verb = useNative ? 'Share' : 'Copy a shareable link to';
     return '<div class="pesukim-name-group__header">'
       + '<h3>' + escapeHtml(name) + '</h3>'
@@ -960,6 +961,12 @@ function setupPesukim() {
 
   // --- Event bindings ---
   wireUpResultsDelegation();
+  if (shareAllSlot) {
+    shareAllSlot.addEventListener('click', function (e) {
+      var btn = e.target.closest('.pesukim-share');
+      if (btn) handleShare(btn);
+    });
+  }
   searchBtn.addEventListener('click', doSearch);
   input.addEventListener('keydown', function (e) {
     if (e.key === 'Enter') {
