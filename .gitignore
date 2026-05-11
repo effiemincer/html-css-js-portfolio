@@ -1,1 +1,13 @@
 scripts/.cache/
+
+# Local agent/tool artifacts
+.agents/
+.claude/
+.playwright-mcp/
+skills-lock.json
+
+# Design iteration screenshots
+*.png
+!public/**/*.png
+!src/**/*.png
+!assets/**/*.png
