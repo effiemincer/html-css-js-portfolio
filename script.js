@@ -1,5 +1,5 @@
 const THEME_KEY = 'theme-preference';
-const SECTION_IDS = ['profile', 'about', 'experience', 'pesukim', 'projects', 'contact'];
+const SECTION_IDS = ['profile', 'about', 'experience', 'projects', 'pesukim', 'contact'];
 const PESUKIM_SCROLL_KEY = 'pesukim-reload-scroll-y';
 let heroAnimTimeout = null;
 let tanachData = null;
