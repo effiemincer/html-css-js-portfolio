@@ -10,7 +10,7 @@
     <meta property="og:description" content="Software developer and AI engineer in Jerusalem. Full-stack products, LLM features, and HIPAA-compliant cloud platforms.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.effiemincer.dev/">
-    <meta property="og:image" content="./assets/github_prof_square.png">
+    <meta property="og:image" content="https://www.effiemincer.dev/assets/github_prof_square.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg?v=2">
     <script>
@@ -125,7 +125,7 @@
                 <div class="about__bio reveal">
                     <p>I'm a software developer and AI engineer, currently working as a contractor at AI Cubed, an early-stage company building HIPAA-compliant healthcare software. I build the platform end to end: cloud infrastructure on AWS, Postgres data models locked down with row-level security, React front ends, and LLM features that turn messy clinical notes into structured documentation.</p>
                     <p>Since April 2026 I've been the lead engineer on a healthcare operations product for a multi-facility nursing-home operator, taking it from an AI-generated prototype to a tested production app. I also built the AI tooling my team ships with: Claude Code rules, slash commands, and an automated review hook that has checked around 400 pull requests.</p>
-                    <p>Before that I built reporting tools at AdvancePro Technologies, and in school I wrote a compiler in Zig and a ray tracer in Java. I have one exam left in my B.Sc. in Computer Science at Jerusalem College of Technology. Give me a problem and I'll figure it out.</p>
+                    <p>Before that I built reporting tools at AdvancePro Technologies, and in school I co-wrote a compiler in Zig and a ray tracer in Java. I have one exam left in my B.Sc. in Computer Science at Jerusalem College of Technology. Give me a problem and I'll figure it out.</p>
                 </div>
                 <div class="about__sidebar reveal">
                     <div class="about__photo">
@@ -161,9 +161,9 @@
                         <p class="exp-entry__company">AI Cubed</p>
                         <p>Building a HIPAA-compliant healthcare SaaS platform end to end, from cloud infrastructure to AI-powered product features.</p>
                         <ul class="exp-entry__highlights">
-                            <li><strong>Lead engineer</strong> (sole engineer since June 2026) on a healthcare operations SaaS for a multi-facility nursing-home operator, built with React, TypeScript, and Supabase. About 1,400 commits and 600+ merged pull requests.</li>
+                            <li><strong>Lead engineer</strong> (sole active engineer since June 2026) on a healthcare operations SaaS for a multi-facility nursing-home operator, built with React, TypeScript, and Supabase. About 1,400 commits and 600+ merged pull requests.</li>
                             <li>Cut critical-path database round-trips by 68% (19 to 6) by moving query-heavy hooks into Postgres functions, and replaced the prototype's permissive access rules with about 160 row-level security policies.</li>
-                            <li>Grew the test suite from 54 to 262 files (about 3,600 test cases) and added pre-push and CI gates for lint, types, tests, and builds.</li>
+                            <li>The test suite grew from 54 to 262 files (about 3,600 test cases) on my watch, and I added pre-push and CI gates for lint, types, tests, and builds.</li>
                             <li>Built the in-app AI help assistant on Claude: streaming responses, prompt caching, role-specific prompts, escalation to support, rate limits, and cost tracking.</li>
                             <li>Built an LLM pipeline that turns free-text clinician notes into structured, EHR-ready records.</li>
                             <li>Deployed the AWS platform from scratch (containerized services, PostgreSQL, MFA, audit logging) with keyless CI/CD from GitHub Actions, and help run the company's HIPAA compliance program.</li>
@@ -284,7 +284,7 @@
                     </div>
                     <div class="project__content">
                         <h3>AI Contract Review Pipeline</h3>
-                        <p class="project__description">Upload a contract PDF and get a colour-coded risk report in under a minute. Claude extracts and classifies clauses across 8 legal categories, RAG compares each one against standard terms, and every clause gets an ok, review, or flag rating with a plain-English reason. Local embeddings and a no-training header keep documents private.</p>
+                        <p class="project__description">Upload a contract PDF and get a color-coded risk report in under a minute. Claude extracts and classifies clauses across 8 legal categories, RAG compares each one against standard terms, and every clause gets an ok, review, or flag rating with a plain-English reason. Local embeddings and a no-training header keep documents private.</p>
                         <ul class="project__tags" aria-label="Technologies">
                             <li>Python</li>
                             <li>Claude API</li>
@@ -325,7 +325,7 @@
                     </div>
                     <div class="project__content">
                         <h3>Menahel</h3>
-                        <p class="project__description">A white-label logistics platform for yeshivas and seminaries, and a side venture I co-founded. A Next.js staff portal and a React Native app for students and staff live in one Turborepo monorepo that shares types, Zod schemas, and business rules. Tenant isolation and role-based access are enforced in Postgres with row-level security, and each school sets six brand colors while the rest of the theme is derived.</p>
+                        <p class="project__description">A white-label logistics platform for yeshivas and seminaries, and a side venture I co-founded. A Next.js staff portal and a React Native app for students and staff live in one Turborepo monorepo that shares types, Zod schemas, and business rules. Tenant isolation and role-based access are enforced in Postgres with row-level security, and each school sets six brand tokens while the rest of the theme is derived.</p>
                         <ul class="project__tags" aria-label="Technologies">
                             <li>Next.js</li>
                             <li>React Native</li>
@@ -333,7 +333,7 @@
                             <li>Supabase</li>
                             <li>Turborepo</li>
                         </ul>
-                        <p class="project__note">Private repo, in progress.</p>
+                        <p class="project__note">Private repo.</p>
                     </div>
                 </article>
                 <article class="project reveal">
@@ -387,10 +387,6 @@
                     <li>
                         <a href="https://github.com/effiemincer/.NET-Task-Management-System" target="_blank" rel="noopener noreferrer">Task Management System</a>
                         <p>A C# / WPF app with admin and user portals and role-based access control.</p>
-                    </li>
-                    <li>
-                        <span class="more-projects__name">Funnier Than AI</span>
-                        <p>A voting game pitting human jokes against AI ones, with a Next.js and Prisma backend and a moderation dashboard. Private repo.</p>
                     </li>
                 </ul>
             </div>
