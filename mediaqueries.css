@@ -39,14 +39,24 @@
 
   /* Experience: meta | content */
   .exp-entry {
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 160px 1fr;
     gap: var(--space-5);
   }
 
   /* Skills: two columns */
   .skills-columns {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-8);
+    gap: var(--space-6) var(--space-8);
+  }
+
+  .exp-entry__meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .more-projects__list {
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--space-7);
   }
 
   /* Projects: image | content side-by-side */
@@ -161,5 +171,11 @@
 
   .pesukim-verse-hebrew {
     font-size: 1.15rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .skills-columns {
+    grid-template-columns: repeat(3, 1fr);
   }
 }

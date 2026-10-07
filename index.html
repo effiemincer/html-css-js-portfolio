@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Effie Mincer — Software Developer & AI Engineer</title>
-    <meta name="description" content="Effie Mincer — Software developer and AI engineer who builds compilers, AI systems, and rendering engines — and ships them. Projects in Zig, Java, Python, and more.">
+    <title>Effie Mincer | Software Developer & AI Engineer</title>
+    <meta name="description" content="Effie Mincer, software developer and AI engineer in Jerusalem. Builds full-stack products, LLM features, and HIPAA-compliant cloud platforms with TypeScript, React, Python, Postgres, and AWS.">
     <link rel="canonical" href="https://www.effiemincer.dev/">
-    <meta property="og:title" content="Effie Mincer — Software Developer & AI Engineer">
-    <meta property="og:description" content="Software developer and AI engineer who builds compilers, AI systems, and rendering engines — and ships them. Projects in Zig, Java, Python, and more.">
+    <meta property="og:title" content="Effie Mincer | Software Developer & AI Engineer">
+    <meta property="og:description" content="Software developer and AI engineer in Jerusalem. Full-stack products, LLM features, and HIPAA-compliant cloud platforms.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.effiemincer.dev/">
     <meta property="og:image" content="./assets/github_prof_square.png">
@@ -39,6 +39,7 @@
         "https://www.linkedin.com/in/effie-mincer/"
       ],
       "jobTitle": "Software Developer & AI Engineer",
+      "knowsAbout": ["TypeScript", "React", "Next.js", "Python", "PostgreSQL", "AWS", "LLM applications", "HIPAA compliance"],
       "alumniOf": {
         "@type": "CollegeOrUniversity",
         "name": "Jerusalem College of Technology (Machon Lev)"
@@ -98,9 +99,9 @@
                 <p class="hero__label reveal" style="--i: 0">Software Developer & AI Engineer</p>
                 <h1 class="hero__name">Effie<br>Mincer</h1>
                 <ul class="hero__tags reveal" style="--i: 2" aria-label="Professional highlights">
-                    <li>Compilers</li>
-                    <li>AI Systems</li>
-                    <li>Rendering Engines</li>
+                    <li>AI Products</li>
+                    <li>Full-Stack Apps</li>
+                    <li>Cloud &amp; Compliance</li>
                     <li>Whatever You Need</li>
                 </ul>
                 <div class="hero__actions reveal" style="--i: 3">
@@ -122,8 +123,9 @@
             </div>
             <div class="about-layout">
                 <div class="about__bio reveal">
-                    <p>I'm a software developer and AI engineer at AICubed, where I build LLM-powered systems on AWS, manage cloud infrastructure, and ship across the full stack. Before that, I built reporting tools, dashboards, and customer-facing applications at AdvancePro Technologies.</p>
-                    <p>I've built compilers from scratch in Zig, wrote a physics-based 3D rendering engine in Java, and recently used AI tooling to build a HIPAA-compliant chatbot on AWS — a project that would typically take a senior developer six months. I'm finishing my B.Sc. in Computer Science at Jerusalem College of Technology. Give me a problem and I'll figure it out.</p>
+                    <p>I'm a software developer and AI engineer, currently working as a contractor at AI Cubed, an early-stage company building HIPAA-compliant healthcare software. I build the platform end to end: cloud infrastructure on AWS, Postgres data models locked down with row-level security, React front ends, and LLM features that turn messy clinical notes into structured documentation.</p>
+                    <p>Since April 2026 I've been the lead engineer on a healthcare operations product for a multi-facility nursing-home operator, taking it from an AI-generated prototype to a tested production app. I also built the AI tooling my team ships with: Claude Code rules, slash commands, and an automated review hook that has checked around 400 pull requests.</p>
+                    <p>Before that I built reporting tools at AdvancePro Technologies, and in school I wrote a compiler in Zig and a ray tracer in Java. I have one exam left in my B.Sc. in Computer Science at Jerusalem College of Technology. Give me a problem and I'll figure it out.</p>
                 </div>
                 <div class="about__sidebar reveal">
                     <div class="about__photo">
@@ -132,11 +134,11 @@
                     <div class="about__facts">
                         <div class="about__fact">
                             <h3>Education</h3>
-                            <p>B.Sc. Computer Science (in progress)<br>Jerusalem College of Technology</p>
+                            <p>B.Sc. Computer Science (final exam remaining)<br>Jerusalem College of Technology</p>
                         </div>
                         <div class="about__fact">
                             <h3>Focus</h3>
-                            <p>AI Engineering, Full-Stack Development, Systems Programming</p>
+                            <p>AI Engineering, Full-Stack Development, Cloud &amp; Compliance</p>
                         </div>
                     </div>
                 </div>
@@ -152,21 +154,43 @@
                 <article class="exp-entry exp-entry--current reveal">
                     <div class="exp-entry__meta">
                         <span class="exp-entry__period">Current</span>
+                        <span class="exp-entry__dates">Mar 2026 &ndash; Now</span>
                     </div>
                     <div class="exp-entry__content">
-                        <h3>Software Developer & AI Engineer</h3>
-                        <p class="exp-entry__company">AICubed LLC</p>
-                        <p>Building the company's AWS infrastructure from the ground up — VPCs, CI/CD pipelines, DNS, the works. Developing LLM-powered document processing systems and a HIPAA-compliant AI chatbot. Contributing across compliance engineering, QA, feature development, and R&D.</p>
+                        <h3>Software Developer & AI Engineer (Contract)</h3>
+                        <p class="exp-entry__company">AI Cubed</p>
+                        <p>Building a HIPAA-compliant healthcare SaaS platform end to end, from cloud infrastructure to AI-powered product features.</p>
+                        <ul class="exp-entry__highlights">
+                            <li><strong>Lead engineer</strong> (sole engineer since June 2026) on a healthcare operations SaaS for a multi-facility nursing-home operator, built with React, TypeScript, and Supabase. About 1,400 commits and 600+ merged pull requests.</li>
+                            <li>Cut critical-path database round-trips by 68% (19 to 6) by moving query-heavy hooks into Postgres functions, and replaced the prototype's permissive access rules with about 160 row-level security policies.</li>
+                            <li>Grew the test suite from 54 to 262 files (about 3,600 test cases) and added pre-push and CI gates for lint, types, tests, and builds.</li>
+                            <li>Built the in-app AI help assistant on Claude: streaming responses, prompt caching, role-specific prompts, escalation to support, rate limits, and cost tracking.</li>
+                            <li>Built an LLM pipeline that turns free-text clinician notes into structured, EHR-ready records.</li>
+                            <li>Deployed the AWS platform from scratch (containerized services, PostgreSQL, MFA, audit logging) with keyless CI/CD from GitHub Actions, and help run the company's HIPAA compliance program.</li>
+                            <li>Designed the team's AI-assisted workflow in Claude Code: ticket to isolated worktree to pull request to multi-pass AI review, with a review hook that has checked about 400 PRs.</li>
+                        </ul>
                     </div>
                 </article>
                 <article class="exp-entry reveal">
                     <div class="exp-entry__meta">
                         <span class="exp-entry__period">Previous</span>
+                        <span class="exp-entry__dates">Oct 2025 &ndash; Feb 2026</span>
                     </div>
                     <div class="exp-entry__content">
                         <h3>Product Developer & Assistant Manager</h3>
                         <p class="exp-entry__company">AdvancePro Technologies</p>
-                        <p>Built reporting dashboards and backend systems in C#, automated engineering metrics in Python, and refactored customer-facing screens in Flutter. Created a complete <a href="https://help.eagleinventory.com/en" target="_blank" rel="noopener noreferrer">knowledge base</a> that takes new users from zero to proficient in hours. Supported team delivery through code reviews, planning, and documentation.</p>
+                        <p>Built inventory reporting and dashboard features in C# backed by complex SQL business logic, automated Jira developer-metrics reporting in Python, and refactored customer-facing screens in Flutter. Created a complete <a href="https://help.eagleinventory.com/en" target="_blank" rel="noopener noreferrer">knowledge base</a> that takes new users from zero to proficient in hours. Supported team delivery through code reviews, planning, QA, and documentation.</p>
+                    </div>
+                </article>
+                <article class="exp-entry reveal">
+                    <div class="exp-entry__meta">
+                        <span class="exp-entry__period">Internship</span>
+                        <span class="exp-entry__dates">May &ndash; Dec 2023</span>
+                    </div>
+                    <div class="exp-entry__content">
+                        <h3>Operations Intern</h3>
+                        <p class="exp-entry__company">Fullpath (formerly AutoLeadStar)</p>
+                        <p>Built an automated mail-merge system in Google Apps Script that cut processing time by 80%, led an end-to-end data migration from Pipedrive to Salesforce, and trained executives, managers, and staff on the new tools and data model.</p>
                     </div>
                 </article>
             </div>
@@ -175,22 +199,38 @@
                 <div class="skills-columns">
                     <div class="skills-column">
                         <h4>Languages</h4>
-                        <ul class="skills-list">
-                            <li><span class="skill-name">Python</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">C++</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">C</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">Java</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">Zig</span><span class="skill-level" data-level="intermediate">Intermediate</span></li>
-                            <li><span class="skill-name">Prolog</span><span class="skill-level" data-level="intermediate">Intermediate</span></li>
+                        <ul class="skills-tags">
+                            <li>TypeScript</li><li>JavaScript</li><li>Python</li><li>SQL</li><li>C#</li><li>Java</li><li>C++</li><li>Zig</li>
                         </ul>
                     </div>
                     <div class="skills-column">
-                        <h4>Tools</h4>
-                        <ul class="skills-list">
-                            <li><span class="skill-name">Git</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">VS Code</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">JetBrains IDEs</span><span class="skill-level" data-level="experienced">Experienced</span></li>
-                            <li><span class="skill-name">AI Agents</span><span class="skill-level" data-level="experienced">Experienced</span></li>
+                        <h4>Frontend</h4>
+                        <ul class="skills-tags">
+                            <li>React</li><li>Next.js</li><li>React Native</li><li>Vite</li><li>TanStack Query</li><li>Tailwind CSS</li><li>Design systems</li><li>PWA</li>
+                        </ul>
+                    </div>
+                    <div class="skills-column">
+                        <h4>Backend &amp; Data</h4>
+                        <ul class="skills-tags">
+                            <li>PostgreSQL</li><li>Row-level security</li><li>Supabase</li><li>Node.js</li><li>FastAPI</li><li>REST &amp; SSE</li><li>Prisma</li><li>n8n</li>
+                        </ul>
+                    </div>
+                    <div class="skills-column">
+                        <h4>AI &amp; LLMs</h4>
+                        <ul class="skills-tags">
+                            <li>Claude API</li><li>Claude Agent SDK</li><li>Amazon Bedrock</li><li>RAG</li><li>LLM evals</li><li>Prompt caching</li><li>LangChain</li><li>Claude Code</li>
+                        </ul>
+                    </div>
+                    <div class="skills-column">
+                        <h4>Cloud &amp; DevOps</h4>
+                        <ul class="skills-tags">
+                            <li>AWS</li><li>Docker</li><li>GitHub Actions</li><li>Cloudflare</li><li>Fly.io</li><li>HIPAA controls</li><li>MFA &amp; RBAC</li>
+                        </ul>
+                    </div>
+                    <div class="skills-column">
+                        <h4>Testing</h4>
+                        <ul class="skills-tags">
+                            <li>Vitest</li><li>Testing Library</li><li>Playwright</li><li>axe</li>
                         </ul>
                     </div>
                 </div>
@@ -203,7 +243,7 @@
                 <h2>Pesukim for Your Name</h2>
             </div>
 
-            <p class="pesukim-intro reveal">There is a custom to recite a verse from Tanach before the final <em>Yihyu L'ratzon</em> at the end of Shemoneh Esrei. You can recite a verse whose first and last letters match the first and last letters of your name, or one that contains your name entirely &mdash; both are perfectly fine options <span class="pesukim-intro__attrib">(heard from HaRav Yitzchak Berkowitz <span lang="he">שליט״א</span>)</span>. When a verse matches both criteria, I call it a <strong>Super Match!</strong></p>
+            <p class="pesukim-intro reveal">There is a custom to recite a verse from Tanach before the final <em>Yihyu L'ratzon</em> at the end of Shemoneh Esrei. You can recite a verse whose first and last letters match the first and last letters of your name, or one that contains your name entirely. Both are perfectly fine options <span class="pesukim-intro__attrib">(heard from HaRav Yitzchak Berkowitz <span lang="he">שליט״א</span>)</span>. When a verse matches both criteria, I call it a <strong>Super Match!</strong></p>
 
             <div class="pesukim-app reveal">
                 <div class="pesukim-input-group">
@@ -247,7 +287,7 @@
                         <button type="button" class="pesukim-sort-toggle__btn" data-sort="chronological" aria-checked="false" role="radio">Chronological</button>
                     </div>
                     <div class="pesukim-toolbar__icons">
-                        <button type="button" class="pesukim-icon-btn pesukim-score-toggle" aria-pressed="false" aria-label="Show prominence scores" title="Show prominence scores — how widely each verse is cited in siddur, Talmud, Midrash, and commentaries.">
+                        <button type="button" class="pesukim-icon-btn pesukim-score-toggle" aria-pressed="false" aria-label="Show prominence scores" title="Show prominence scores: how widely each verse is cited in siddur, Talmud, Midrash, and commentaries.">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="4" width="3" height="14"/></svg>
                         </button>
                     </div>
@@ -264,12 +304,105 @@
             </div>
             <div class="projects-list">
                 <article class="project reveal">
+                    <div class="project__image project__image--panel" aria-hidden="true">
+                        <div class="panel panel--ask">
+                            <p class="panel__kicker">Ask your network</p>
+                            <p class="panel__query">&ldquo;Who could I ask about a health-tech job?&rdquo;</p>
+                            <ul class="panel__people">
+                                <li><span class="panel__dot panel__dot--teal"></span><span><b>Person from last week&rsquo;s meetup</b><i>&ldquo;said their team is hiring backend devs&rdquo;</i></span></li>
+                                <li><span class="panel__dot panel__dot--plum"></span><span><b>Friend of a friend</b><i>&ldquo;runs product at a clinic-software startup&rdquo;</i></span></li>
+                            </ul>
+                            <p class="panel__foot">Evidence quoted from your own voice notes &middot; draft opener ready</p>
+                        </div>
+                    </div>
+                    <div class="project__content">
+                        <h3>Networking Assistant</h3>
+                        <p class="project__description">A personal relationship memory, built solo in four weeks for a company hackathon. Record a 30-second voice note after meeting someone. It transcribes the note, extracts a profile where every claim cites the transcript, and answers questions like &ldquo;who could I ask about a health-tech job?&rdquo; with specific people, the evidence, and a drafted opener written in your own style.</p>
+                        <p class="project__description">Measured with golden and held-out eval sets (retrieval recall 1.00 on held-out) and about 1,000 automated tests across unit, integration, and three-browser end-to-end suites.</p>
+                        <ul class="project__tags" aria-label="Technologies">
+                            <li>Next.js</li>
+                            <li>Claude Agent SDK</li>
+                            <li>Supabase</li>
+                            <li>PWA</li>
+                            <li>Playwright</li>
+                        </ul>
+                        <p class="project__note">Private repo (it holds data about real people). Demo on request.</p>
+                    </div>
+                </article>
+                <article class="project reveal">
+                    <div class="project__image project__image--panel" aria-hidden="true">
+                        <div class="panel panel--risk">
+                            <p class="panel__kicker">Contract risk report</p>
+                            <ul class="panel__clauses">
+                                <li><span>&sect; 7.2 Limitation of liability</span><em class="panel__flag panel__flag--flag">Flag</em></li>
+                                <li><span>&sect; 9.1 Termination for convenience</span><em class="panel__flag panel__flag--review">Review</em></li>
+                                <li><span>&sect; 4.3 Confidentiality</span><em class="panel__flag panel__flag--ok">OK</em></li>
+                                <li><span>&sect; 3.4 Payment terms</span><em class="panel__flag panel__flag--ok">OK</em></li>
+                            </ul>
+                            <p class="panel__foot">Each clause compared against a library of standard terms</p>
+                        </div>
+                    </div>
+                    <div class="project__content">
+                        <h3>AI Contract Review Pipeline</h3>
+                        <p class="project__description">Upload a contract PDF and get a colour-coded risk report in under a minute. Claude extracts and classifies clauses across 8 legal categories, RAG compares each one against standard terms, and every clause gets an ok, review, or flag rating with a plain-English reason. Local embeddings and a no-training header keep documents private.</p>
+                        <ul class="project__tags" aria-label="Technologies">
+                            <li>Python</li>
+                            <li>Claude API</li>
+                            <li>LangChain</li>
+                            <li>ChromaDB</li>
+                            <li>Streamlit</li>
+                        </ul>
+                        <div class="project__links">
+                            <a href="https://github.com/effiemincer/contract-review-pipeline" target="_blank" rel="noopener noreferrer">View Code</a>
+                            <a href="https://github.com/effiemincer/contract-review-pipeline/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
+                        </div>
+                    </div>
+                </article>
+                <article class="project reveal">
+                    <div class="project__image project__image--panel" aria-hidden="true">
+                        <div class="panel panel--theme">
+                            <p class="panel__kicker">Tenant theme: 6 tokens in</p>
+                            <div class="panel__swatches">
+                                <span style="background: var(--accent)"></span>
+                                <span style="background: var(--teal)"></span>
+                                <span style="background: var(--plum)"></span>
+                                <span style="background: var(--text-1)"></span>
+                                <span style="background: var(--surface-2)"></span>
+                                <span style="background: var(--bg)"></span>
+                            </div>
+                            <p class="panel__kicker">Everything else derived, for web and mobile</p>
+                            <div class="panel__swatches panel__swatches--derived">
+                                <span style="background: var(--accent-soft)"></span>
+                                <span style="background: var(--accent-hover)"></span>
+                                <span style="background: var(--teal-soft)"></span>
+                                <span style="background: var(--plum-soft)"></span>
+                                <span style="background: var(--text-2)"></span>
+                                <span style="background: var(--text-3)"></span>
+                                <span style="background: var(--border)"></span>
+                                <span style="background: var(--surface)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project__content">
+                        <h3>Menahel</h3>
+                        <p class="project__description">A white-label logistics platform for yeshivas and seminaries, and a side venture I co-founded. A Next.js staff portal and a React Native app for students and staff live in one Turborepo monorepo that shares types, Zod schemas, and business rules. Tenant isolation and role-based access are enforced in Postgres with row-level security, and each school sets six brand colors while the rest of the theme is derived.</p>
+                        <ul class="project__tags" aria-label="Technologies">
+                            <li>Next.js</li>
+                            <li>React Native</li>
+                            <li>TypeScript</li>
+                            <li>Supabase</li>
+                            <li>Turborepo</li>
+                        </ul>
+                        <p class="project__note">Private repo, in progress.</p>
+                    </div>
+                </article>
+                <article class="project reveal">
                     <div class="project__image">
                         <img src="./assets/jacktohack.png" alt="Jack to VM to Hack compiler pipeline diagram" style="object-position: center top" loading="lazy" decoding="async">
                     </div>
                     <div class="project__content">
                         <h3>Jack to Hack Compiler</h3>
-                        <p class="project__description">A full compiler pipeline — lexer, parser, code generator — built entirely in Zig. Takes Jack source code through VM intermediate representation down to Hack assembly. Building every stage from scratch taught me how much complexity lives beneath the code we write every day.</p>
+                        <p class="project__description">A Nand2Tetris compiler toolchain in Zig, built with a partner. It takes Jack source through a stack-based VM down to Hack assembly. I wrote most of the pipeline: the Jack tokenizer, symbol table, and code generator, plus the VM translator&rsquo;s parser and memory-segment code writer.</p>
                         <ul class="project__tags" aria-label="Technologies">
                             <li>Zig</li>
                             <li>Compiler</li>
@@ -287,7 +420,7 @@
                     </div>
                     <div class="project__content">
                         <h3>3D Scene Rendering Engine</h3>
-                        <p class="project__description">A physics-based rendering engine in Java that calculates light reflections, shadows, and surface textures to generate realistic 3D scenes. The most satisfying project I've built — write the math, hit run, and see a beautifully lit scene appear from nothing.</p>
+                        <p class="project__description">A physics-based ray tracer in Java with lighting, shadows, reflections, and refraction. Adaptive super-sampling and multithreading cut render time by 70%. Still one of the most satisfying things I&rsquo;ve built: write the math, hit run, and watch a lit scene appear from nothing.</p>
                         <ul class="project__tags" aria-label="Technologies">
                             <li>Java</li>
                             <li>3D</li>
@@ -299,41 +432,27 @@
                         </div>
                     </div>
                 </article>
-                <article class="project reveal">
-                    <div class="project__image">
-                        <img src="./assets/task-manager.png" alt="Task management application interface" loading="lazy" decoding="async">
-                    </div>
-                    <div class="project__content">
-                        <h3>Task Management System</h3>
-                        <p class="project__description">A full-featured task management app built with .NET, with project organization, tracking, and a clean interface.</p>
-                        <ul class="project__tags" aria-label="Technologies">
-                            <li>.NET</li>
-                            <li>Task Management</li>
-                        </ul>
-                        <div class="project__links">
-                            <a href="https://github.com/effiemincer/.NET-Task-Management-System" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a href="https://github.com/effiemincer/.NET-Task-Management-System/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
-                        </div>
-                    </div>
-                </article>
-                <article class="project reveal">
-                    <div class="project__image">
-                        <img src="./assets/Library-Database.png" alt="Entity-relationship diagram of library database" loading="lazy" decoding="async">
-                    </div>
-                    <div class="project__content">
-                        <h3>Library Relational Database</h3>
-                        <p class="project__description">A complete relational database design for a library system — entity-relationship modeling, normalized schema, and SQL implementation from the ground up.</p>
-                        <ul class="project__tags" aria-label="Technologies">
-                            <li>SQL</li>
-                            <li>Database Design</li>
-                            <li>ERD</li>
-                        </ul>
-                        <div class="project__links">
-                            <a href="https://github.com/effiemincer/database_mini_proj" target="_blank" rel="noopener noreferrer">View Code</a>
-                            <a href="https://github.com/effiemincer/database_mini_proj/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read Overview</a>
-                        </div>
-                    </div>
-                </article>
+            </div>
+            <div class="more-projects reveal">
+                <h3 class="more-projects__title">More I&rsquo;ve built</h3>
+                <ul class="more-projects__list">
+                    <li>
+                        <a href="https://github.com/effiemincer/email-triage-agent" target="_blank" rel="noopener noreferrer">AI Email Triage Agent</a>
+                        <p>A daily GitHub Actions job that reads Gmail or Outlook, filters the obvious with a rules engine to save API calls, and has Claude summarize the rest into a priority-sorted digest.</p>
+                    </li>
+                    <li>
+                        <a href="https://github.com/effiemincer/database_mini_proj" target="_blank" rel="noopener noreferrer">Library Relational Database</a>
+                        <p>A PostgreSQL course project with a partner: schema, PL/pgSQL, and a 250K-row generated dataset. Our indexes took one query from over two minutes to 0.2 seconds.</p>
+                    </li>
+                    <li>
+                        <a href="https://github.com/effiemincer/.NET-Task-Management-System" target="_blank" rel="noopener noreferrer">Task Management System</a>
+                        <p>A C# / WPF app with admin and user portals and role-based access control.</p>
+                    </li>
+                    <li>
+                        <span class="more-projects__name">Funnier Than AI</span>
+                        <p>A voting game pitting human jokes against AI ones, with a Next.js and Prisma backend and a moderation dashboard. Private repo.</p>
+                    </li>
+                </ul>
             </div>
         </section>
 

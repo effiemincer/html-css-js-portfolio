@@ -63,3 +63,7 @@ All colors are defined as CSS custom properties in OKLCH color space in `:root` 
 ## Assets
 
 The `assets/` directory contains profile images, project screenshots, social icons, a favicon, and a resume PDF. Image filenames are referenced directly in `index.html`.
+
+- **Resume PDF**: `assets/Effie Mincer.pdf` is a copy of a one-page resume built in `~/repos/job-applications` (currently `Tailored/2026/Effie Mincer Resume - 2026 - Full-Stack AI.pdf`). Replace the file, keep the name, since both resume links point at it.
+- **Projects without screenshots** (private repos, no UI) use `.project__image--panel`: a CSS-drawn card (`.panel`, `.panel--ask` / `--risk` / `--theme`) built only from theme tokens, so it follows light/dark automatically. It keeps the 3:2 box but sets `overflow: visible` + `min-width: 0` so it can grow taller on phones without widening the grid track.
+- **Content source**: experience, skills, and project copy must match `~/repos/job-applications/profile/career.md` and follow its `disclosure.md` (no client names, general AWS wording). No em dashes in site copy.
